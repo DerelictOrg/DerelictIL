@@ -1,0 +1,16 @@
+{
+    "name": "derelict-il",
+    "description": "A dynamic binding to the DevIL library.",
+    "homepage": "https://github.com/DerelictOrg/DerelictIL",
+    "license": "Boost",
+    "authors": [
+        "Mike Parker"
+    ],
+
+    "targetName": "DerelictIL",
+    "targetPath": "lib",
+
+    "dependencies": {
+        "derelict-util": ">=1.0.0"
+    }
+}
