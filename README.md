@@ -1,7 +1,7 @@
 DerelictIL
 ==========
 
-A dynamic binding to the [DevIL][1] library for the D Programming Language.
+A dynamic binding to version 1.7.8 of the [DevIL][1] library for the D Programming Language.
 
 For information on how to build DerelictIL and link it with your programs, please see the post [Using Derelict][2] at The One With D.
 
@@ -22,6 +22,8 @@ void main() {
     ...
 }
 ```
+
+NOTE: In the Windows binary packages downloadable from the [DevIL homepage][1], DevIL.dll does not properly export the function ilFlipSurfaceDxtcData. Therefore, I have currently disabled it in the binding.
 
 [1]: http://openil.sourceforge.net/
 [2]: http://dblog.aldacron.net/derelict-help/using-derelict/

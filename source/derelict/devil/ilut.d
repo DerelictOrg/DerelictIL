@@ -43,68 +43,69 @@ private {
 }
 
 enum : ILenum {
-    ILUT_VERSION_1_7_3=1,
-    ILUT_VERSION=173,
+    ILUT_VERSION_1_7_8 = 1,
+    ILUT_VERSION = 178,
 
-    ILUT_OPENGL_BIT=0x00000001,
-    ILUT_D3D_BIT=0x00000002,
-    ILUT_ALL_ATTRIB_BITS=0x000FFFFF,
+    ILUT_OPENGL_BIT = 0x00000001,
+    ILUT_D3D_BIT = 0x00000002,
+    ILUT_ALL_ATTRIB_BITS = 0x000FFFFF,
 
-    ILUT_INVALID_ENUM=0x0501,
-    ILUT_OUT_OF_MEMORY=0x0502,
-    ILUT_INVALID_VALUE=0x0505,
-    ILUT_ILLEGAL_OPERATION=0x0506,
-    ILUT_INVALID_PARAM=0x0509,
-    ILUT_COULD_NOT_OPEN_FILE=0x050A,
-    ILUT_STACK_OVERFLOW=0x050E,
-    ILUT_STACK_UNDERFLOW=0x050F,
-    ILUT_BAD_DIMENSIONS=0x0511,
-    ILUT_NOT_SUPPORTED=0x0550,
+    ILUT_INVALID_ENUM = 0x0501,
+    ILUT_OUT_OF_MEMORY = 0x0502,
+    ILUT_INVALID_VALUE = 0x0505,
+    ILUT_ILLEGAL_OPERATION = 0x0506,
+    ILUT_INVALID_PARAM = 0x0509,
+    ILUT_COULD_NOT_OPEN_FILE = 0x050A,
+    ILUT_STACK_OVERFLOW = 0x050E,
+    ILUT_STACK_UNDERFLOW = 0x050F,
+    ILUT_BAD_DIMENSIONS = 0x0511,
+    ILUT_NOT_SUPPORTED = 0x0550,
 
-    ILUT_PALETTE_MODE=0x0600,
-    ILUT_OPENGL_CONV=0x0610,
-    ILUT_D3D_MIPLEVELS=0x0620,
-    ILUT_MAXTEX_WIDTH=0x0630,
-    ILUT_MAXTEX_HEIGHT=0x0631,
-    ILUT_MAXTEX_DEPTH=0x0632,
-    ILUT_GL_USE_S3TC=0x0634,
-    ILUT_D3D_USE_DXTC=0x0634,
-    ILUT_GL_GEN_S3TC=0x0635,
-    ILUT_D3D_GEN_DXTC=0x0635,
-    ILUT_S3TC_FORMAT=0x0705,
-    ILUT_DXTC_FORMAT=0x0705,
-    ILUT_D3D_POOL=0x0706,
-    ILUT_D3D_ALPHA_KEY_COLOR=0x0707,
-    ILUT_D3D_ALPHA_KEY_COLOUR=0x0707,
-    ILUT_FORCE_INTEGER_FORMAT=0x0636,
+    ILUT_PALETTE_MODE = 0x0600,
+    ILUT_OPENGL_CONV = 0x0610,
+    ILUT_D3D_MIPLEVELS = 0x0620,
+    ILUT_MAXTEX_WIDTH = 0x0630,
+    ILUT_MAXTEX_HEIGHT = 0x0631,
+    ILUT_MAXTEX_DEPTH = 0x0632,
+    ILUT_GL_USE_S3TC = 0x0634,
+    ILUT_D3D_USE_DXTC = 0x0634,
+    ILUT_GL_GEN_S3TC = 0x0635,
+    ILUT_D3D_GEN_DXTC = 0x0635,
+    ILUT_S3TC_FORMAT = 0x0705,
+    ILUT_DXTC_FORMAT = 0x0705,
+    ILUT_D3D_POOL = 0x0706,
+    ILUT_D3D_ALPHA_KEY_COLOR = 0x0707,
+    ILUT_D3D_ALPHA_KEY_COLOUR = 0x0707,
+    ILUT_FORCE_INTEGER_FORMAT = 0x0636,
 
-    ILUT_GL_AUTODETECT_TEXTURE_TARGET=0x0807,
+    ILUT_GL_AUTODETECT_TEXTURE_TARGET = 0x0807,
 
-    ILUT_VERSION_NUM=IL_VERSION_NUM,
-    ILUT_VENDOR=IL_VENDOR,
+    ILUT_VERSION_NUM = IL_VERSION_NUM,
+    ILUT_VENDOR = IL_VENDOR,
 
-    ILUT_OPENGL=0,
-    ILUT_ALLEGRO=1,
-    ILUT_WIN32=2,
-    ILUT_DIRECT3D8=3,
-    ILUT_DIRECT3D9=4,
-    ILUT_X11=5,
+    ILUT_OPENGL = 0,
+    ILUT_ALLEGRO = 1,
+    ILUT_WIN32 = 2,
+    ILUT_DIRECT3D8 = 3,
+    ILUT_DIRECT3D9 = 4,
+    ILUT_X11 = 5,
+    ILUT_DIRECT3D10 = 6,
 }
 
 extern( System ) {
     alias da_ilutDisable = ILboolean function( ILenum );
     alias da_ilutEnable = ILboolean function( ILenum );
     alias da_ilutGetBoolean = ILboolean function( ILenum );
-    alias da_ilutGetBooleanv = ILvoid function( ILenum, ILboolean* );
+    alias da_ilutGetBooleanv = void function( ILenum, ILboolean* );
     alias da_ilutGetInteger = ILint function( ILenum );
-    alias da_ilutGetIntegerv = ILvoid function( ILenum, ILint* );
+    alias da_ilutGetIntegerv = void function( ILenum, ILint* );
     alias da_ilutGetString = ILstring function( ILenum );
-    alias da_ilutInit = ILvoid function();
+    alias da_ilutInit = void function();
     alias da_ilutIsDisabled = ILboolean function( ILenum );
     alias da_ilutIsEnabled = ILboolean function( ILenum );
-    alias da_ilutPopAttrib = ILvoid function();
-    alias da_ilutPushAttrib = ILvoid function( ILuint );
-    alias da_ilutSetInteger = ILvoid function( ILenum, ILint );
+    alias da_ilutPopAttrib = void function();
+    alias da_ilutPushAttrib = void function( ILuint );
+    alias da_ilutSetInteger = void function( ILenum, ILint );
     alias da_ilutRenderer = ILboolean function( ILenum );
     alias da_ilutGLBindTexImage = uint function();
     alias da_ilutGLBindMipmaps = uint function();
@@ -120,8 +121,8 @@ extern( System ) {
     version( Windows ) {
         private import derelict.util.wintypes;
         alias da_ilutConvertToHBitmap = HBITMAP function( HDC hDC );
-        alias da_ilutFreePaddedData = ILvoid function( ILubyte *Data );
-        alias da_ilutGetBmpInfo = ILvoid function( BITMAPINFO *Info );
+        alias da_ilutFreePaddedData = void function( ILubyte *Data );
+        alias da_ilutGetBmpInfo = void function( BITMAPINFO *Info );
         alias da_ilutGetHPal = HPALETTE function();
         alias da_ilutGetPaddedData = ILubyte* function();
         alias da_ilutGetWinClipboard = ILboolean function();
@@ -204,6 +205,8 @@ class DerelictILUTLoader : SharedLibLoader {
         bindFunc( cast( void** )&ilutPushAttrib, "ilutPushAttrib" );
         bindFunc( cast( void** )&ilutSetInteger, "ilutSetInteger" );
         bindFunc( cast( void** )&ilutRenderer, "ilutRenderer" );
+
+        // TODO should this be versioned?
         bindFunc( cast( void** )&ilutGLBindTexImage, "ilutGLBindTexImage" );
         bindFunc( cast( void** )&ilutGLBindMipmaps, "ilutGLBindMipmaps" );
         bindFunc( cast( void** )&ilutGLBuildMipmaps, "ilutGLBuildMipmaps" );
@@ -217,6 +220,7 @@ class DerelictILUTLoader : SharedLibLoader {
 
         version( Windows )
         {
+            // TODO what about all the dx functions?
             bindFunc( cast( void** )&ilutConvertToHBitmap, "ilutConvertToHBitmap" );
             bindFunc( cast( void** )&ilutFreePaddedData, "ilutFreePaddedData" );
             bindFunc( cast( void** )&ilutGetBmpInfo, "ilutGetBmpInfo" );
@@ -235,7 +239,7 @@ class DerelictILUTLoader : SharedLibLoader {
 
         version( linux )
         {
-           // TODO
+           // TODO X11 stuff here? What about XSHM?
         }
     }
 }

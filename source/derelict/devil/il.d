@@ -55,12 +55,13 @@ alias ILfloat = float;
 alias ILclampf = float;
 alias ILdouble = double;
 alias ILclampd = double;
-alias ILvoid = void;
+alias ILint64 = long;
+alias ILuint64 = ulong;
 
 version( DerelictIL_Unicode ) {
     alias ILchar = wchar;
     alias ILstring = wchar*;
-    alias ILconst_string = const( char )*;
+    alias ILconst_string = const( wchar )*;
 }
 else {
     alias ILchar = char;
@@ -74,341 +75,412 @@ enum : ILboolean {
 }
 
 enum : ILenum {
-    IL_COLOUR_INDEX=0x1900,
-    IL_COLOR_INDEX=0x1900,
-    IL_RGB=0x1907,
-    IL_RGBA=0x1908,
-    IL_BGR=0x80E0,
-    IL_BGRA=0x80E1,
-    IL_LUMINANCE=0x1909,
-    IL_LUMINANCE_ALPHA=0x190A,
+    IL_COLOUR_INDEX = 0x1900,
+    IL_COLOR_INDEX = 0x1900,
+    IL_RGB = 0x1907,
+    IL_RGBA = 0x1908,
+    IL_BGR = 0x80E0,
+    IL_BGRA = 0x80E1,
+    IL_LUMINANCE = 0x1909,
+    IL_LUMINANCE_ALPHA = 0x190A,
 
-    IL_BYTE=0x1400,
-    IL_UNSIGNED_BYTE=0x1401,
-    IL_SHORT=0x1402,
-    IL_UNSIGNED_SHORT=0x1403,
-    IL_INT=0x1404,
-    IL_UNSIGNED_INT=0x1405,
-    IL_FLOAT=0x1406,
-    IL_DOUBLE=0x140A,
-    IL_HALF = 0x140B,
+    IL_BYTE = 0x1400,
+    IL_UNSIGNED_BYTE = 0x1401,
+    IL_SHORT = 0x1402,
+    IL_UNSIGNED_SHORT = 0x1403,
+    IL_INT = 0x1404,
+    IL_UNSIGNED_INT = 0x1405,
+    IL_FLOAT = 0x1406,
+    IL_DOUBLE = 0x140A,
+    IL_HALF  =  0x140B,
 
-    IL_VENDOR=0x1F00,
-    IL_LOAD_EXT=0x1F01,
-    IL_SAVE_EXT=0x1F02,
+    IL_MAX_BYTE  =  byte.max,
+    IL_MAX_UNSIGNED_BYTE  =  ubyte.max,
+    IL_MAX_SHORT  =  short.max,
+    IL_MAX_UNSIGNED_SHORT  =  ushort.max,
+    IL_MAX_INT  =  int.max,
+    IL_MAX_UNSIGNED_INT  =  uint.max,
 
-    IL_VERSION_1_7_3=1,
-    IL_VERSION=173,
+    IL_VENDOR = 0x1F00,
+    IL_LOAD_EXT = 0x1F01,
+    IL_SAVE_EXT = 0x1F02,
 
-    IL_ORIGIN_BIT=0x00000001,
-    IL_FILE_BIT=0x00000002,
-    IL_PAL_BIT=0x00000004,
-    IL_FORMAT_BIT=0x00000008,
-    IL_TYPE_BIT=0x00000010,
-    IL_COMPRESS_BIT=0x00000020,
-    IL_LOADFAIL_BIT=0x00000040,
-    IL_FORMAT_SPECIFIC_BIT=0x00000080,
-    IL_ALL_ATTRIB_BITS=0x000FFFFF,
+    IL_VERSION_1_7_8 = 1,
+    IL_VERSION = 178,
 
-    IL_PAL_NONE=0x0400,
-    IL_PAL_RGB24=0x0401,
-    IL_PAL_RGB32=0x0402,
-    IL_PAL_RGBA32=0x0403,
-    IL_PAL_BGR24=0x0404,
-    IL_PAL_BGR32=0x0405,
-    IL_PAL_BGRA32=0x0406,
+    IL_ORIGIN_BIT = 0x00000001,
+    IL_FILE_BIT = 0x00000002,
+    IL_PAL_BIT = 0x00000004,
+    IL_FORMAT_BIT = 0x00000008,
+    IL_TYPE_BIT = 0x00000010,
+    IL_COMPRESS_BIT = 0x00000020,
+    IL_LOADFAIL_BIT = 0x00000040,
+    IL_FORMAT_SPECIFIC_BIT = 0x00000080,
+    IL_ALL_ATTRIB_BITS = 0x000FFFFF,
 
-    IL_TYPE_UNKNOWN=0x0000,
-    IL_BMP=0x0420,
-    IL_CUT=0x0421,
-    IL_DOOM=0x0422,
-    IL_DOOM_FLAT=0x0423,
-    IL_ICO=0x0424,
-    IL_JPG=0x0425,
-    IL_JFIF=0x0425,
-    IL_LBM=0x0426,
-    IL_PCD=0x0427,
-    IL_PCX=0x0428,
-    IL_PIC=0x0429,
-    IL_PNG=0x042A,
-    IL_PNM=0x042B,
-    IL_SGI=0x042C,
-    IL_TGA=0x042D,
-    IL_TIF=0x042E,
-    IL_CHEAD=0x042F,
-    IL_RAW=0x0430,
-    IL_MDL=0x0431,
-    IL_WAL=0x0432,
-    IL_LIF=0x0434,
-    IL_MNG=0x0435,
-    IL_JNG=0x0435,
-    IL_GIF=0x0436,
-    IL_DDS=0x0437,
-    IL_DCX=0x0438,
-    IL_PSD=0x0439,
-    IL_EXIF=0x043A,
-    IL_PSP=0x043B,
-    IL_PIX=0x043C,
-    IL_PXR=0x043D,
-    IL_XPM=0x043E,
-    IL_HDR=0x043F,
-    IL_ICNS=0x0440,
-    IL_JP2=0x0441,
-    IL_EXR=0x0442,
-    IL_WDP=0x0443,
-    IL_JASC_PAL=0x0475,
+    IL_PAL_NONE = 0x0400,
+    IL_PAL_RGB24 = 0x0401,
+    IL_PAL_RGB32 = 0x0402,
+    IL_PAL_RGBA32 = 0x0403,
+    IL_PAL_BGR24 = 0x0404,
+    IL_PAL_BGR32 = 0x0405,
+    IL_PAL_BGRA32 = 0x0406,
 
-    IL_NO_ERROR=0x0000,
-    IL_INVALID_ENUM=0x0501,
-    IL_OUT_OF_MEMORY=0x0502,
-    IL_FORMAT_NOT_SUPPORTED=0x0503,
-    IL_INTERNAL_ERROR=0x0504,
-    IL_INVALID_VALUE=0x0505,
-    IL_ILLEGAL_OPERATION=0x0506,
-    IL_ILLEGAL_FILE_VALUE=0x0507,
-    IL_INVALID_FILE_HEADER=0x0508,
-    IL_INVALID_PARAM=0x0509,
-    IL_COULD_NOT_OPEN_FILE=0x050A,
-    IL_INVALID_EXTENSION=0x050B,
-    IL_FILE_ALREADY_EXISTS=0x050C,
-    IL_OUT_FORMAT_SAME=0x050D,
-    IL_STACK_OVERFLOW=0x050E,
-    IL_STACK_UNDERFLOW=0x050F,
-    IL_INVALID_CONVERSION=0x0510,
-    IL_BAD_DIMENSIONS=0x0511,
-    IL_FILE_READ_ERROR=0x0512,
-    IL_FILE_WRITE_ERROR=0x0512,
+    IL_TYPE_UNKNOWN = 0x0000,
+    IL_BMP = 0x0420,
+    IL_CUT = 0x0421,
+    IL_DOOM = 0x0422,
+    IL_DOOM_FLAT = 0x0423,
+    IL_ICO = 0x0424,
+    IL_JPG = 0x0425,
+    IL_JFIF = 0x0425,
+    IL_ILBM = 0x0426,
+    IL_PCD = 0x0427,
+    IL_PCX = 0x0428,
+    IL_PIC = 0x0429,
+    IL_PNG = 0x042A,
+    IL_PNM = 0x042B,
+    IL_SGI = 0x042C,
+    IL_TGA = 0x042D,
+    IL_TIF = 0x042E,
+    IL_CHEAD = 0x042F,
+    IL_RAW = 0x0430,
+    IL_MDL = 0x0431,
+    IL_WAL = 0x0432,
+    IL_LIF = 0x0434,
+    IL_MNG = 0x0435,
+    IL_JNG = 0x0435,
+    IL_GIF = 0x0436,
+    IL_DDS = 0x0437,
+    IL_DCX = 0x0438,
+    IL_PSD = 0x0439,
+    IL_EXIF = 0x043A,
+    IL_PSP = 0x043B,
+    IL_PIX = 0x043C,
+    IL_PXR = 0x043D,
+    IL_XPM = 0x043E,
+    IL_HDR = 0x043F,
+    IL_ICNS = 0x0440,
+    IL_JP2 = 0x0441,
+    IL_EXR = 0x0442,
+    IL_WDP = 0x0443,
+    IL_VTF = 0x0444,
+    IL_WBMP = 0x0445,
+    IL_SUN = 0x0446,
+    IL_IFF = 0x0447,
+    IL_TPL = 0x0448,
+    IL_FITS = 0x0449,
+    IL_DICOM = 0x044A,
+    IL_IWI = 0x044B,
+    IL_BLP = 0x044C,
+    IL_FTX = 0x044D,
+    IL_ROT = 0x44E,
+    IL_TEXTURE = 0x44F,
+    IL_DPX = 0x450,
+    IL_UTX = 0x451,
+    IL_MP3 = 0x0452,
 
-    IL_LIB_GIF_ERROR=0x05E1,
-    IL_LIB_JPEG_ERROR=0x05E2,
-    IL_LIB_PNG_ERROR=0x05E3,
-    IL_LIB_TIFF_ERROR=0x05E4,
-    IL_LIB_MNG_ERROR=0x05E5,
-    IL_LIB_JP2_ERROR=0x05E6,
-    IL_UNKNOWN_ERROR=0x05FF,
+    IL_JASC_PAL = 0x0475,
 
-    IL_ORIGIN_SET=0x0600,
-    IL_ORIGIN_LOWER_LEFT=0x0601,
-    IL_ORIGIN_UPPER_LEFT=0x0602,
-    IL_ORIGIN_MODE=0x0603,
+    IL_NO_ERROR = 0x0000,
+    IL_INVALID_ENUM = 0x0501,
+    IL_OUT_OF_MEMORY = 0x0502,
+    IL_FORMAT_NOT_SUPPORTED = 0x0503,
+    IL_INTERNAL_ERROR = 0x0504,
+    IL_INVALID_VALUE = 0x0505,
+    IL_ILLEGAL_OPERATION = 0x0506,
+    IL_ILLEGAL_FILE_VALUE = 0x0507,
+    IL_INVALID_FILE_HEADER = 0x0508,
+    IL_INVALID_PARAM = 0x0509,
+    IL_COULD_NOT_OPEN_FILE = 0x050A,
+    IL_INVALID_EXTENSION = 0x050B,
+    IL_FILE_ALREADY_EXISTS = 0x050C,
+    IL_OUT_FORMAT_SAME = 0x050D,
+    IL_STACK_OVERFLOW = 0x050E,
+    IL_STACK_UNDERFLOW = 0x050F,
+    IL_INVALID_CONVERSION = 0x0510,
+    IL_BAD_DIMENSIONS = 0x0511,
+    IL_FILE_READ_ERROR = 0x0512,
+    IL_FILE_WRITE_ERROR = 0x0512,
 
-    IL_FORMAT_SET=0x0610,
-    IL_FORMAT_MODE=0x0611,
-    IL_TYPE_SET=0x0612,
-    IL_TYPE_MODE=0x0613,
+    IL_LIB_GIF_ERROR = 0x05E1,
+    IL_LIB_JPEG_ERROR = 0x05E2,
+    IL_LIB_PNG_ERROR = 0x05E3,
+    IL_LIB_TIFF_ERROR = 0x05E4,
+    IL_LIB_MNG_ERROR = 0x05E5,
+    IL_LIB_JP2_ERROR = 0x05E6,
+    IL_UNKNOWN_ERROR = 0x05FF,
 
-    IL_FILE_OVERWRITE=0x0620,
-    IL_FILE_MODE=0x0621,
+    IL_ORIGIN_SET = 0x0600,
+    IL_ORIGIN_LOWER_LEFT = 0x0601,
+    IL_ORIGIN_UPPER_LEFT = 0x0602,
+    IL_ORIGIN_MODE = 0x0603,
 
-    IL_CONV_PAL=0x0630,
+    IL_FORMAT_SET = 0x0610,
+    IL_FORMAT_MODE = 0x0611,
+    IL_TYPE_SET = 0x0612,
+    IL_TYPE_MODE = 0x0613,
 
-    IL_DEFAULT_ON_FAIL=0x0632,
+    IL_FILE_OVERWRITE = 0x0620,
+    IL_FILE_MODE = 0x0621,
 
-    IL_USE_KEY_COLOUR=0x0635,
-    IL_USE_KEY_COLOR=0x0635,
+    IL_CONV_PAL = 0x0630,
 
-    IL_SAVE_INTERLACED=0x0639,
-    IL_INTERLACE_MODE=0x063A,
+    IL_DEFAULT_ON_FAIL = 0x0632,
 
-    IL_QUANTIZATION_MODE=0x0640,
-    IL_WU_QUANT=0x0641,
-    IL_NEU_QUANT=0x0642,
-    IL_NEU_QUANT_SAMPLE=0x0643,
-    IL_MAX_QUANT_INDEXS=0x0644,
+    IL_USE_KEY_COLOUR = 0x0635,
+    IL_USE_KEY_COLOR = 0x0635,
+    IL_BLIT_BLEND = 0x0636,
 
-    IL_FASTEST=0x0660,
-    IL_LESS_MEM=0x0661,
-    IL_DONT_CARE=0x0662,
-    IL_MEM_SPEED_HINT=0x0665,
-    IL_USE_COMPRESSION=0x0666,
-    IL_NO_COMPRESSION=0x0667,
-    IL_COMPRESSION_HINT=0x0668,
+    IL_SAVE_INTERLACED = 0x0639,
+    IL_INTERLACE_MODE = 0x063A,
 
-    IL_SUB_NEXT=0x0680,
-    IL_SUB_MIPMAP=0x0681,
-    IL_SUB_LAYER=0x0682,
+    IL_QUANTIZATION_MODE = 0x0640,
+    IL_WU_QUANT = 0x0641,
+    IL_NEU_QUANT = 0x0642,
+    IL_NEU_QUANT_SAMPLE = 0x0643,
+    IL_MAX_QUANT_INDEXS = 0x0644,
+    IL_MAX_QUANT_INDICES = 0x0644,
 
-    IL_COMPRESS_MODE=0x0700,
-    IL_COMPRESS_NONE=0x0701,
-    IL_COMPRESS_RLE=0x0702,
-    IL_COMPRESS_LZO=0x0703,
-    IL_COMPRESS_ZLIB=0x0704,
+    IL_FASTEST = 0x0660,
+    IL_LESS_MEM = 0x0661,
+    IL_DONT_CARE = 0x0662,
+    IL_MEM_SPEED_HINT = 0x0665,
+    IL_USE_COMPRESSION = 0x0666,
+    IL_NO_COMPRESSION = 0x0667,
+    IL_COMPRESSION_HINT = 0x0668,
 
-    IL_TGA_CREATE_STAMP=0x0710,
-    IL_JPG_QUALITY=0x0711,
-    IL_PNG_INTERLACE=0x0712,
-    IL_TGA_RLE=0x0713,
-    IL_BMP_RLE=0x0714,
-    IL_SGI_RLE=0x0715,
-    IL_TGA_ID_STRING=0x0717,
-    IL_TGA_AUTHNAME_STRING=0x0718,
-    IL_TGA_AUTHCOMMENT_STRING=0x0719,
-    IL_PNG_AUTHNAME_STRING=0x071A,
-    IL_PNG_TITLE_STRING=0x071B,
-    IL_PNG_DESCRIPTION_STRING=0x071C,
-    IL_TIF_DESCRIPTION_STRING=0x071D,
-    IL_TIF_HOSTCOMPUTER_STRING=0x071E,
-    IL_TIF_DOCUMENTNAME_STRING=0x071F,
-    IL_TIF_AUTHNAME_STRING=0x0720,
-    IL_JPG_SAVE_FORMAT=0x0721,
-    IL_CHEAD_HEADER_STRING=0x0722,
-    IL_PCD_PICNUM=0x0723,
-    IL_PNG_ALPHA_INDEX=0x0724,
+    IL_NVIDIA_COMPRESS = 0x0670,
+    IL_SQUISH_COMPRESS = 0x0671,
 
-    IL_DXTC_FORMAT=0x0705,
-    IL_DXT1=0x0706,
-    IL_DXT2=0x0707,
-    IL_DXT3=0x0708,
-    IL_DXT4=0x0709,
-    IL_DXT5=0x070A,
-    IL_DXT_NO_COMP=0x070B,
-    IL_KEEP_DXTC_DATA=0x070C,
-    IL_DXTC_DATA_FORMAT=0x070D,
-    IL_3DC=0x070E,
-    IL_RXGB=0x070F,
-    IL_ATI1N=0x0710,
+    IL_SUB_NEXT = 0x0680,
+    IL_SUB_MIPMAP = 0x0681,
+    IL_SUB_LAYER = 0x0682,
 
-    IL_CUBEMAP_POSITIVEX=0x00000400,
-    IL_CUBEMAP_NEGATIVEX=0x00000800,
-    IL_CUBEMAP_POSITIVEY=0x00001000,
-    IL_CUBEMAP_NEGATIVEY=0x00002000,
-    IL_CUBEMAP_POSITIVEZ=0x00004000,
-    IL_CUBEMAP_NEGATIVEZ=0x00008000,
+    IL_COMPRESS_MODE = 0x0700,
+    IL_COMPRESS_NONE = 0x0701,
+    IL_COMPRESS_RLE = 0x0702,
+    IL_COMPRESS_LZO = 0x0703,
+    IL_COMPRESS_ZLIB = 0x0704,
 
-    IL_VERSION_NUM=0x0DE2,
-    IL_IMAGE_WIDTH=0x0DE4,
-    IL_IMAGE_HEIGHT=0x0DE5,
-    IL_IMAGE_DEPTH=0x0DE6,
-    IL_IMAGE_SIZE_OF_DATA=0x0DE7,
-    IL_IMAGE_BPP=0x0DE8,
-    IL_IMAGE_BYTES_PER_PIXEL=0x0DE8,
-    IL_IMAGE_BITS_PER_PIXEL=0x0DE9,
-    IL_IMAGE_FORMAT=0x0DEA,
-    IL_IMAGE_TYPE=0x0DEB,
-    IL_PALETTE_TYPE=0x0DEC,
-    IL_PALETTE_SIZE=0x0DED,
-    IL_PALETTE_BPP=0x0DEE,
-    IL_PALETTE_NUM_COLS=0x0DEF,
-    IL_PALETTE_BASE_TYPE=0x0DF0,
-    IL_NUM_IMAGES=0x0DF1,
-    IL_NUM_MIPMAPS=0x0DF2,
-    IL_NUM_LAYERS=0x0DF3,
-    IL_ACTIVE_IMAGE=0x0DF4,
-    IL_ACTIVE_MIPMAP=0x0DF5,
-    IL_ACTIVE_LAYER=0x0DF6,
-    IL_CUR_IMAGE=0x0DF7,
-    IL_IMAGE_DURATION=0x0DF8,
-    IL_IMAGE_PLANESIZE=0x0DF9,
-    IL_IMAGE_BPC=0x0DFA,
-    IL_IMAGE_OFFX=0x0DFB,
-    IL_IMAGE_OFFY=0x0DFC,
-    IL_IMAGE_CUBEFLAGS=0x0DFD,
-    IL_IMAGE_ORIGIN=0x0DFE,
-    IL_IMAGE_CHANNELS=0x0DFF,
+    IL_TGA_CREATE_STAMP = 0x0710,
+    IL_JPG_QUALITY = 0x0711,
+    IL_PNG_INTERLACE = 0x0712,
+    IL_TGA_RLE = 0x0713,
+    IL_BMP_RLE = 0x0714,
+    IL_SGI_RLE = 0x0715,
+    IL_TGA_ID_STRING = 0x0717,
+    IL_TGA_AUTHNAME_STRING = 0x0718,
+    IL_TGA_AUTHCOMMENT_STRING = 0x0719,
+    IL_PNG_AUTHNAME_STRING = 0x071A,
+    IL_PNG_TITLE_STRING = 0x071B,
+    IL_PNG_DESCRIPTION_STRING = 0x071C,
+    IL_TIF_DESCRIPTION_STRING = 0x071D,
+    IL_TIF_HOSTCOMPUTER_STRING = 0x071E,
+    IL_TIF_DOCUMENTNAME_STRING = 0x071F,
+    IL_TIF_AUTHNAME_STRING = 0x0720,
+    IL_JPG_SAVE_FORMAT = 0x0721,
+    IL_CHEAD_HEADER_STRING = 0x0722,
+    IL_PCD_PICNUM = 0x0723,
+    IL_PNG_ALPHA_INDEX = 0x0724,
+    IL_JPG_PROGRESSIVE = 0x0725,
+    IL_VTF_COMP = 0x0726,
+
+    IL_DXTC_FORMAT = 0x0705,
+    IL_DXT1 = 0x0706,
+    IL_DXT2 = 0x0707,
+    IL_DXT3 = 0x0708,
+    IL_DXT4 = 0x0709,
+    IL_DXT5 = 0x070A,
+    IL_DXT_NO_COMP = 0x070B,
+    IL_KEEP_DXTC_DATA = 0x070C,
+    IL_DXTC_DATA_FORMAT = 0x070D,
+    IL_3DC = 0x070E,
+    IL_RXGB = 0x070F,
+    IL_ATI1N = 0x0710,
+    IL_DXT1A = 0x0711,
+
+    IL_CUBEMAP_POSITIVEX = 0x00000400,
+    IL_CUBEMAP_NEGATIVEX = 0x00000800,
+    IL_CUBEMAP_POSITIVEY = 0x00001000,
+    IL_CUBEMAP_NEGATIVEY = 0x00002000,
+    IL_CUBEMAP_POSITIVEZ = 0x00004000,
+    IL_CUBEMAP_NEGATIVEZ = 0x00008000,
+    IL_SPHEREMAP = 0x00010000,
+
+    IL_VERSION_NUM = 0x0DE2,
+    IL_IMAGE_WIDTH = 0x0DE4,
+    IL_IMAGE_HEIGHT = 0x0DE5,
+    IL_IMAGE_DEPTH = 0x0DE6,
+    IL_IMAGE_SIZE_OF_DATA = 0x0DE7,
+    IL_IMAGE_BPP = 0x0DE8,
+    IL_IMAGE_BYTES_PER_PIXEL = 0x0DE8,
+    IL_IMAGE_BITS_PER_PIXEL = 0x0DE9,
+    IL_IMAGE_FORMAT = 0x0DEA,
+    IL_IMAGE_TYPE = 0x0DEB,
+    IL_PALETTE_TYPE = 0x0DEC,
+    IL_PALETTE_SIZE = 0x0DED,
+    IL_PALETTE_BPP = 0x0DEE,
+    IL_PALETTE_NUM_COLS = 0x0DEF,
+    IL_PALETTE_BASE_TYPE = 0x0DF0,
+    IL_NUM_FACES = 0x0DE1,
+    IL_NUM_IMAGES = 0x0DF1,
+    IL_NUM_MIPMAPS = 0x0DF2,
+    IL_NUM_LAYERS = 0x0DF3,
+    IL_ACTIVE_IMAGE = 0x0DF4,
+    IL_ACTIVE_MIPMAP = 0x0DF5,
+    IL_ACTIVE_LAYER = 0x0DF6,
+    IL_ACTIVE_FACE = 0x0E00,
+    IL_CUR_IMAGE = 0x0DF7,
+    IL_IMAGE_DURATION = 0x0DF8,
+    IL_IMAGE_PLANESIZE = 0x0DF9,
+    IL_IMAGE_BPC = 0x0DFA,
+    IL_IMAGE_OFFX = 0x0DFB,
+    IL_IMAGE_OFFY = 0x0DFC,
+    IL_IMAGE_CUBEFLAGS = 0x0DFD,
+    IL_IMAGE_ORIGIN = 0x0DFE,
+    IL_IMAGE_CHANNELS = 0x0DFF,
 }
 
 enum : ILint {
-    IL_SEEK_SET=0,
-    IL_SEEK_CUR=1,
-    IL_SEEK_END=2,
-    IL_EOF=1,
+    IL_SEEK_SET = 0,
+    IL_SEEK_CUR = 1,
+    IL_SEEK_END = 2,
+    IL_EOF = 1,
 }
 
 alias ILHANDLE = void*;
 
+// Callbacks
 extern( System ) nothrow {
+    alias fCloseRProc = void function( ILHANDLE );
+    alias fEofProc = ILboolean function( ILHANDLE );
+    alias fGetcProc = ILint function( ILHANDLE );
+    alias fOpenRProc = ILHANDLE function( ILconst_string );
+    alias fReadProc = ILint function( void*,ILuint,ILuint,ILHANDLE );
+    alias fSeekRProc = ILint function( ILHANDLE,ILint,ILint );
+    alias fTellRProc = ILint function( ILHANDLE );
+
+    alias fCloseWProc = void function( ILHANDLE );
+    alias fOpenWProc = ILHANDLE function( ILconst_string );
+    alias fPutcProc = ILint function( ILubyte,ILHANDLE );
+    alias fSeekWProc = ILint function( ILHANDLE,ILint,ILint );
+    alias fTellWProc = ILint function( ILHANDLE );
+    alias fWriteProc = ILint function( const( void )*,ILuint,ILuint,ILHANDLE );
+
+    alias mAlloc = void* function( const( ILsizei ) );
+    alias mFree = void function( const( void )* );
+
+    alias IL_LOADPROC = ILenum function( ILconst_string );
+    alias IL_SAVEPROC = ILenum function( ILconst_string );
+}
+
+// API
+extern( System ) @nogc nothrow {
+    alias da_ilActiveFace = ILboolean function( ILuint );
     alias da_ilActiveImage = ILboolean function(ILuint);
     alias da_ilActiveLayer = ILboolean function(ILuint);
     alias da_ilActiveMipmap = ILboolean function(ILuint);
     alias da_ilApplyPal = ILboolean function(ILconst_string);
-    alias da_ilApplyProfile = ILboolean function(ILstring, ILstring);
-    alias da_ilBindImage = ILvoid function(ILuint);
-    alias da_ilBlit = ILboolean function(ILuint, ILint, ILint, ILint, ILuint, ILuint, ILuint, ILuint, ILuint, ILuint);
-    alias da_ilClearColour = ILvoid function(ILclampf, ILclampf, ILclampf, ILclampf);
+    alias da_ilApplyProfile = ILboolean function(ILstring,ILstring);
+    alias da_ilBindImage = void function(ILuint);
+    alias da_ilBlit = ILboolean function(ILuint,ILint,ILint,ILint,ILuint,ILuint,ILuint,ILuint,ILuint,ILuint);
+    alias da_ilClampNTSC = ILboolean function();
+    alias da_ilClearColour = void function(ILclampf,ILclampf,ILclampf,ILclampf);
     alias da_ilClearImage = ILboolean function();
     alias da_ilCloneCurImage = ILuint function();
+    alias da_ilCompressDXT = ILubyte* function( ILubyte*,ILuint,ILuint,ILuint,ILenum,ILuint* );
     alias da_ilCompressFunc = ILboolean function(ILenum);
-    alias da_ilConvertImage = ILboolean function(ILenum, ILenum);
+    alias da_ilConvertImage = ILboolean function(ILenum,ILenum);
     alias da_ilConvertPal = ILboolean function(ILenum);
     alias da_ilCopyImage = ILboolean function(ILuint);
-    alias da_ilCopyPixels = ILuint function(ILuint, ILuint, ILuint, ILuint, ILuint, ILuint, ILenum, ILenum, ILvoid*);
-    alias da_ilCreateSubImage = ILuint function(ILenum, ILuint);
+    alias da_ilCopyPixels = ILuint function(ILuint,ILuint,ILuint,ILuint,ILuint,ILuint,ILenum,ILenum,void*);
+    alias da_ilCreateSubImage = ILuint function(ILenum,ILuint);
     alias da_ilDefaultImage = ILboolean function();
-    alias da_ilDeleteImage = ILvoid function(ILuint);
-    alias da_ilDeleteImages = ILvoid function(ILsizei, in ILuint*);
+    alias da_ilDeleteImage = void function(ILuint);
+    alias da_ilDeleteImages = void function(ILsizei,in ILuint*);
+    alias da_ilDetermineType = ILenum function( ILconst_string );
+    alias da_ilDetermineTypeF = ILenum function( ILHANDLE );
+    alias da_ilDetermineTypeL = ILenum function( const( void )*,ILuint );
     alias da_ilDisable = ILboolean function(ILenum);
+    alias da_ilDxtcDataToImage = ILboolean function();
+    alias da_ilDxtcDataToSurface = ILboolean function();
     alias da_ilEnable = ILboolean function(ILenum);
+    //alias da_ilFlipSurfaceDxtcData = void function();
     alias da_ilFormatFunc = ILboolean function(ILenum);
-    alias da_ilGenImages = ILvoid function(ILsizei, ILuint*);
+    alias da_ilGenImages = void function(ILsizei,ILuint*);
     alias da_ilGenImage = ILuint function();
     alias da_ilGetAlpha = ILubyte* function(ILenum);
     alias da_ilGetBoolean = ILboolean function(ILenum);
-    alias da_ilGetBooleanv = ILvoid function(ILenum, ILboolean*);
+    alias da_ilGetBooleanv = void function(ILenum,ILboolean*);
     alias da_ilGetData = ILubyte* function();
-    alias da_ilGetDXTCData = ILuint function(ILvoid*, ILuint, ILenum);
+    alias da_ilGetDXTCData = ILuint function(void*,ILuint,ILenum);
     alias da_ilGetError = ILenum function();
     alias da_ilGetInteger = ILint function(ILenum);
-    alias da_ilGetIntegerv = ILvoid function(ILenum, ILint*);
+    alias da_ilGetIntegerv = void function(ILenum,ILint*);
     alias da_ilGetLumpPos = ILuint function();
     alias da_ilGetPalette = ILubyte* function();
     alias da_ilGetString = ILstring function(ILenum);
-    alias da_ilHint = ILvoid function(ILenum, ILenum);
-    alias da_ilInit = ILvoid function();
+    alias da_ilHint = void function(ILenum,ILenum);
+    alias da_ilInit = void function();
+    alias da_ilImageToDxtcData = ILboolean function( ILenum );
     alias da_ilIsDisabled = ILboolean function(ILenum);
     alias da_ilIsEnabled = ILboolean function(ILenum);
-    alias da_ilDetermineTypeF = ILenum function(ILHANDLE);
     alias da_ilIsImage = ILboolean function(ILuint);
-    alias da_ilIsValid = ILboolean function(ILenum, ILstring);
-    alias da_ilIsValidF = ILboolean function(ILenum, ILHANDLE);
-    alias da_ilIsValidL = ILboolean function(ILenum, ILvoid*, ILuint);
-    alias da_ilKeyColour = ILvoid function(ILclampf, ILclampf, ILclampf, ILclampf);
-    alias da_ilLoad = ILboolean function(ILenum, ILconst_string);
-    alias da_ilLoadF = ILboolean function(ILenum, ILHANDLE);
+    alias da_ilIsValid = ILboolean function(ILenum,ILstring);
+    alias da_ilIsValidF = ILboolean function(ILenum,ILHANDLE);
+    alias da_ilIsValidL = ILboolean function(ILenum,void*,ILuint);
+    alias da_ilKeyColour = void function(ILclampf,ILclampf,ILclampf,ILclampf);
+    alias da_ilLoad = ILboolean function(ILenum,ILconst_string);
+    alias da_ilLoadF = ILboolean function(ILenum,ILHANDLE);
     alias da_ilLoadImage = ILboolean function(ILconst_string);
-    alias da_ilLoadL = ILboolean function(ILenum, in ILvoid*, ILuint);
+    alias da_ilLoadL = ILboolean function(ILenum,in void*,ILuint);
     alias da_ilLoadPal = ILboolean function(ILconst_string);
-    alias da_ilModAlpha = ILvoid function(ILdouble);
+    alias da_ilModAlpha = void function(ILdouble);
     alias da_ilOriginFunc = ILboolean function(ILenum);
-    alias da_ilOverlayImage = ILboolean function(ILuint, ILint, ILint, ILint);
-    alias da_ilPopAttrib = ILvoid function();
-    alias da_ilPushAttrib = ILvoid function(ILuint);
-    alias da_ilRegisterFormat = ILvoid function(ILenum);
-    alias da_ilRegisterLoad = ILboolean function(ILconst_string, IL_LOADPROC);
+    alias da_ilOverlayImage = ILboolean function(ILuint,ILint,ILint,ILint);
+    alias da_ilPopAttrib = void function();
+    alias da_ilPushAttrib = void function(ILuint);
+    alias da_ilRegisterFormat = void function(ILenum);
+    alias da_ilRegisterLoad = ILboolean function(ILconst_string,IL_LOADPROC);
     alias da_ilRegisterMipNum = ILboolean function(ILuint);
     alias da_ilRegisterNumImages = ILboolean function(ILuint);
-    alias da_ilRegisterOrigin = ILvoid function(ILenum);
-    alias da_ilRegisterPal = ILvoid function(ILvoid*, ILuint, ILenum);
-    alias da_ilRegisterSave = ILboolean function(ILconst_string, IL_SAVEPROC);
-    alias da_ilRegisterType = ILvoid function(ILenum);
+    alias da_ilRegisterOrigin = void function(ILenum);
+    alias da_ilRegisterPal = void function(void*,ILuint,ILenum);
+    alias da_ilRegisterSave = ILboolean function(ILconst_string,IL_SAVEPROC);
+    alias da_ilRegisterType = void function(ILenum);
     alias da_ilRemoveLoad = ILboolean function(ILconst_string);
     alias da_ilRemoveSave = ILboolean function(ILconst_string);
-    alias da_ilResetRead = ILvoid function();
-    alias da_ilResetWrite = ILvoid function();
-    alias da_ilSave = ILboolean function(ILenum, ILconst_string);
-    alias da_ilSaveF = ILuint function(ILenum, ILHANDLE);
+    alias da_ilResetRead = void function();
+    alias da_ilResetWrite = void function();
+    alias da_ilSave = ILboolean function(ILenum,ILconst_string);
+    alias da_ilSaveF = ILuint function(ILenum,ILHANDLE);
     alias da_ilSaveImage = ILboolean function(ILconst_string);
-    alias da_ilSaveL = ILuint function(ILenum, ILvoid*, ILuint);
+    alias da_ilSaveL = ILuint function(ILenum,void*,ILuint);
     alias da_ilSavePal = ILboolean function(ILconst_string);
     alias da_ilSetAlpha = ILboolean function(ILdouble);
-    alias da_ilSetData = ILboolean function(ILvoid*);
+    alias da_ilSetData = ILboolean function(void*);
     alias da_ilSetDuration = ILboolean function(ILuint);
-    alias da_ilSetInteger = ILvoid function(ILenum, ILint);
-    alias da_ilSetMemory = ILvoid function(mAlloc, mFree);
-    alias da_ilSetPixels = ILvoid function(ILint, ILint, ILint, ILuint, ILuint, ILuint, ILenum, ILenum, ILvoid*);
-    alias da_ilSetRead = ILvoid function(fOpenRProc, fCloseRProc, fEofProc, fGetcProc, fReadProc, fSeekRProc, fTellRProc);
-    alias da_ilSetString = ILvoid function(ILenum, in char*);
-    alias da_ilSetWrite = ILvoid function(fOpenWProc, fCloseWProc, fPutcProc, fSeekWProc, fTellWProc, fWriteProc);
-    alias da_ilShutDown = ILvoid function();
-    alias da_ilTexImage = ILboolean function(ILuint, ILuint, ILuint, ILubyte, ILenum, ILenum, ILvoid*);
+    alias da_ilSetInteger = void function(ILenum,ILint);
+    alias da_ilSetMemory = void function(mAlloc,mFree);
+    alias da_ilSetPixels = void function(ILint,ILint,ILint,ILuint,ILuint,ILuint,ILenum,ILenum,void*);
+    alias da_ilSetRead = void function(fOpenRProc,fCloseRProc,fEofProc,fGetcProc,fReadProc,fSeekRProc,fTellRProc);
+    alias da_ilSetString = void function(ILenum,in char*);
+    alias da_ilSetWrite = void function(fOpenWProc,fCloseWProc,fPutcProc,fSeekWProc,fTellWProc,fWriteProc);
+    alias da_ilShutDown = void function();
+    alias da_ilSurfaceToDxtcData = ILboolean function( ILenum );
+    alias da_ilTexImage = ILboolean function(ILuint,ILuint,ILuint,ILubyte,ILenum,ILenum,void*);
+    alias da_ilTexImageDxtc = ILboolean function( ILint,ILuint,ILuint,ILubyte,ILenum,ILenum,void* );
     alias da_ilTypeFromExt = ILenum function(ILconst_string);
     alias da_ilTypeFunc = ILboolean function(ILenum);
-    alias da_ilLoadData = ILboolean function(ILconst_string, ILuint, ILuint, ILuint, ILubyte);
-    alias da_ilLoadDataF = ILboolean function(ILHANDLE, ILuint, ILuint, ILuint, ILubyte);
-    alias da_ilLoadDataL = ILboolean function(ILvoid*, ILuint, ILuint, ILuint, ILuint, ILubyte);
+    alias da_ilLoadData = ILboolean function(ILconst_string,ILuint,ILuint,ILuint,ILubyte);
+    alias da_ilLoadDataF = ILboolean function(ILHANDLE,ILuint,ILuint,ILuint,ILubyte);
+    alias da_ilLoadDataL = ILboolean function(void*,ILuint,ILuint,ILuint,ILuint,ILubyte);
     alias da_ilSaveData = ILboolean function(ILconst_string);
 }
 
 __gshared {
+    da_ilActiveFace ilActiveFace;
     da_ilActiveImage ilActiveImage;
     da_ilActiveLayer ilActiveLayer;
     da_ilActiveMipmap ilActiveMipmap;
@@ -416,9 +488,11 @@ __gshared {
     da_ilApplyProfile ilApplyProfile;
     da_ilBindImage ilBindImage;
     da_ilBlit ilBlit;
+    da_ilClampNTSC ilClampNTSC;
     da_ilClearColour ilClearColour;
     da_ilClearImage ilClearImage;
     da_ilCloneCurImage ilCloneCurImage;
+    da_ilCompressDXT ilCompressDXT;
     da_ilCompressFunc ilCompressFunc;
     da_ilConvertImage ilConvertImage;
     da_ilConvertPal ilConvertPal;
@@ -428,8 +502,14 @@ __gshared {
     da_ilDefaultImage ilDefaultImage;
     da_ilDeleteImage ilDeleteImage;
     da_ilDeleteImages ilDeleteImages;
+    da_ilDetermineType ilDetermineType;
+    da_ilDetermineTypeF ilDetermineTypeF;
+    da_ilDetermineTypeL ilDetermineTypeL;
     da_ilDisable ilDisable;
+    da_ilDxtcDataToImage ilDxtcDataToImage;
+    da_ilDxtcDataToSurface ilDxtcDataToSurface;
     da_ilEnable ilEnable;
+    //da_ilFlipSurfaceDxtcData ilFlipSurfaceDxtcData;
     da_ilFormatFunc ilFormatFunc;
     da_ilGenImages ilGenImages;
     da_ilGenImage ilGenImage;
@@ -446,9 +526,9 @@ __gshared {
     da_ilGetString ilGetString;
     da_ilHint ilHint;
     da_ilInit ilInit;
+    da_ilImageToDxtcData ilImageToDxtcData;
     da_ilIsDisabled ilIsDisabled;
     da_ilIsEnabled ilIsEnabled;
-    da_ilDetermineTypeF ilDetermineTypeF;
     da_ilIsImage ilIsImage;
     da_ilIsValid ilIsValid;
     da_ilIsValidF ilIsValidF;
@@ -491,7 +571,9 @@ __gshared {
     da_ilSetString ilSetString;
     da_ilSetWrite ilSetWrite;
     da_ilShutDown ilShutDown;
+    da_ilSurfaceToDxtcData ilSurfaceToDxtcData;
     da_ilTexImage ilTexImage;
+    da_ilTexImageDxtc ilTexImageDxtc;
     da_ilTypeFromExt ilTypeFromExt;
     da_ilTypeFunc ilTypeFunc;
     da_ilLoadData ilLoadData;
@@ -503,35 +585,13 @@ __gshared {
     alias ilKeyColor = ilKeyColour;
 }
 
-extern( System ) nothrow {
-    alias fCloseRProc = ILvoid function( ILHANDLE );
-    alias fEofProc = ILboolean function( ILHANDLE );
-    alias fGetcProc = ILint function( ILHANDLE );
-    alias fOpenRProc = ILHANDLE function( ILconst_string );
-    alias fReadProc = ILint function( void*, ILuint, ILuint, ILHANDLE );
-    alias fSeekRProc = ILint function( ILHANDLE, ILint, ILint );
-    alias fTellRProc = ILint function( ILHANDLE );
-
-    alias fCloseWProc = ILvoid function( ILHANDLE );
-    alias fOpenWProc = ILHANDLE function( ILconst_string );
-    alias fPutcProc = ILint function( ILubyte, ILHANDLE );
-    alias fSeekWProc = ILint function( ILHANDLE, ILint, ILint );
-    alias fTellWProc = ILint function( ILHANDLE );
-    alias fWriteProc = ILint function( in void*, ILuint, ILuint, ILHANDLE );
-
-    alias mAlloc = ILvoid* function( ILuint );
-    alias mFree = ILvoid function( in ILvoid* );
-
-    alias IL_LOADPROC = ILenum function( ILconst_string );
-    alias IL_SAVEPROC = ILenum function( ILconst_string );
-}
-
 class DerelictILLoader : SharedLibLoader {
     public this() {
         super( libNames );
     }
 
     protected override void loadSymbols() {
+        bindFunc( cast( void** )&ilActiveFace, "ilActiveFace" );
         bindFunc( cast( void** )&ilActiveImage, "ilActiveImage" );
         bindFunc( cast( void** )&ilActiveLayer, "ilActiveLayer" );
         bindFunc( cast( void** )&ilActiveMipmap, "ilActiveMipmap" );
@@ -539,9 +599,11 @@ class DerelictILLoader : SharedLibLoader {
         bindFunc( cast( void** )&ilApplyProfile, "ilApplyProfile" );
         bindFunc( cast( void** )&ilBindImage, "ilBindImage" );
         bindFunc( cast( void** )&ilBlit, "ilBlit" );
+        bindFunc( cast( void** )&ilClampNTSC, "ilClampNTSC" );
         bindFunc( cast( void** )&ilClearColour, "ilClearColour" );
         bindFunc( cast( void** )&ilClearImage, "ilClearImage" );
         bindFunc( cast( void** )&ilCloneCurImage, "ilCloneCurImage" );
+        bindFunc( cast( void** )&ilCompressDXT, "ilCompressDXT" );
         bindFunc( cast( void** )&ilCompressFunc, "ilCompressFunc" );
         bindFunc( cast( void** )&ilConvertImage, "ilConvertImage" );
         bindFunc( cast( void** )&ilConvertPal, "ilConvertPal" );
@@ -551,8 +613,14 @@ class DerelictILLoader : SharedLibLoader {
         bindFunc( cast( void** )&ilDefaultImage, "ilDefaultImage" );
         bindFunc( cast( void** )&ilDeleteImage, "ilDeleteImage" );
         bindFunc( cast( void** )&ilDeleteImages, "ilDeleteImages" );
+        bindFunc( cast( void** )&ilDetermineType, "ilDetermineType" );
+        bindFunc( cast( void** )&ilDetermineTypeF, "ilDetermineTypeF" );
+        bindFunc( cast( void** )&ilDetermineTypeL, "ilDetermineTypeL" );
         bindFunc( cast( void** )&ilDisable, "ilDisable" );
+        bindFunc( cast( void** )&ilDxtcDataToImage, "ilDxtcDataToImage" );
+        bindFunc( cast( void** )&ilDxtcDataToSurface, "ilDxtcDataToSurface" );
         bindFunc( cast( void** )&ilEnable, "ilEnable" );
+        //bindFunc( cast( void** )&ilFlipSurfaceDxtcData, "ilFlipSurfaceDxtcData" );
         bindFunc( cast( void** )&ilFormatFunc, "ilFormatFunc" );
         bindFunc( cast( void** )&ilGenImages, "ilGenImages" );
         bindFunc( cast( void** )&ilGenImage, "ilGenImage" );
@@ -569,9 +637,9 @@ class DerelictILLoader : SharedLibLoader {
         bindFunc( cast( void** )&ilGetString, "ilGetString" );
         bindFunc( cast( void** )&ilHint, "ilHint" );
         bindFunc( cast( void** )&ilInit, "ilInit" );
+        bindFunc( cast( void** )&ilImageToDxtcData, "ilImageToDxtcData" );
         bindFunc( cast( void** )&ilIsDisabled, "ilIsDisabled" );
         bindFunc( cast( void** )&ilIsEnabled, "ilIsEnabled" );
-        bindFunc( cast( void** )&ilDetermineTypeF, "ilDetermineTypeF" );
         bindFunc( cast( void** )&ilIsImage, "ilIsImage" );
         bindFunc( cast( void** )&ilIsValid, "ilIsValid" );
         bindFunc( cast( void** )&ilIsValidF, "ilIsValidF" );
@@ -614,7 +682,9 @@ class DerelictILLoader : SharedLibLoader {
         bindFunc( cast( void** )&ilSetString, "ilSetString" );
         bindFunc( cast( void** )&ilSetWrite, "ilSetWrite" );
         bindFunc( cast( void** )&ilShutDown, "ilShutDown" );
+        bindFunc( cast( void** )&ilSurfaceToDxtcData, "ilSurfaceToDxtcData" );
         bindFunc( cast( void** )&ilTexImage, "ilTexImage" );
+        bindFunc( cast( void** )&ilTexImageDxtc, "ilTexImageDxtc" );
         bindFunc( cast( void** )&ilTypeFromExt, "ilTypeFromExt" );
         bindFunc( cast( void** )&ilTypeFunc, "ilTypeFunc" );
         bindFunc( cast( void** )&ilLoadData, "ilLoadData" );

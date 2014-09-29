@@ -43,43 +43,45 @@ private {
 }
 
 enum : ILenum {
-    ILU_VERSION_1_7_3=1,
-    ILU_VERSION=173,
+    ILU_VERSION_1_7_8 = 1,
+    ILU_VERSION = 178,
 
-    ILU_FILTER=0x2600,
-    ILU_NEAREST=0x2601,
-    ILU_LINEAR=0x2602,
-    ILU_BILINEAR=0x2603,
-    ILU_SCALE_BOX=0x2604,
-    ILU_SCALE_TRIANGLE=0x2605,
-    ILU_SCALE_BELL=0x2606,
-    ILU_SCALE_BSPLINE=0x2607,
-    ILU_SCALE_LANCZOS3=0x2608,
-    ILU_SCALE_MITCHELL=0x2609,
+    ILU_FILTER = 0x2600,
+    ILU_NEAREST = 0x2601,
+    ILU_LINEAR = 0x2602,
+    ILU_BILINEAR = 0x2603,
+    ILU_SCALE_BOX = 0x2604,
+    ILU_SCALE_TRIANGLE = 0x2605,
+    ILU_SCALE_BELL = 0x2606,
+    ILU_SCALE_BSPLINE = 0x2607,
+    ILU_SCALE_LANCZOS3 = 0x2608,
+    ILU_SCALE_MITCHELL = 0x2609,
 
-    ILU_INVALID_ENUM=0x0501,
-    ILU_OUT_OF_MEMORY=0x0502,
-    ILU_INTERNAL_ERROR=0x0504,
-    ILU_INVALID_VALUE=0x0505,
-    ILU_ILLEGAL_OPERATION=0x0506,
-    ILU_INVALID_PARAM=0x0509,
+    ILU_INVALID_ENUM = 0x0501,
+    ILU_OUT_OF_MEMORY = 0x0502,
+    ILU_INTERNAL_ERROR = 0x0504,
+    ILU_INVALID_VALUE = 0x0505,
+    ILU_ILLEGAL_OPERATION = 0x0506,
+    ILU_INVALID_PARAM = 0x0509,
 
-    ILU_PLACEMENT=0x0700,
-    ILU_LOWER_LEFT=0x0701,
-    ILU_LOWER_RIGHT=0x0702,
-    ILU_UPPER_LEFT=0x0703,
-    ILU_UPPER_RIGHT=0x0704,
-    ILU_CENTER=0x0705,
-    ILU_CONVOLUTION_MATRIX=0x0710,
+    ILU_PLACEMENT = 0x0700,
+    ILU_LOWER_LEFT = 0x0701,
+    ILU_LOWER_RIGHT = 0x0702,
+    ILU_UPPER_LEFT = 0x0703,
+    ILU_UPPER_RIGHT = 0x0704,
+    ILU_CENTER = 0x0705,
+    ILU_CONVOLUTION_MATRIX = 0x0710,
 
-    ILU_VERSION_NUM=IL_VERSION_NUM,
-    ILU_VENDOR=IL_VENDOR,
+    ILU_VERSION_NUM = IL_VERSION_NUM,
+    ILU_VENDOR = IL_VENDOR,
 
-    ILU_ENGLISH=0x800,
-    ILU_ARABIC=0x801,
-    ILU_DUTCH=0x802,
-    ILU_JAPANESE=0x803,
-    ILU_SPANISH=0x804,
+    ILU_ENGLISH = 0x800,
+    ILU_ARABIC = 0x801,
+    ILU_DUTCH = 0x802,
+    ILU_JAPANESE = 0x803,
+    ILU_SPANISH = 0x804,
+    ILU_GERMAN = 0x0805,
+    ILU_FRENCH = 0x0806,
 }
 
 struct ILinfo {
@@ -110,7 +112,7 @@ struct ILpointi {
     ILint x, y;
 }
 
-extern( System ) nothrow {
+extern( System ) @nogc nothrow {
     alias da_iluAlienify = ILboolean function();
     alias da_iluBlurAvg = ILboolean function( ILuint );
     alias da_iluBlurGaussian = ILboolean function( ILuint );
@@ -119,7 +121,7 @@ extern( System ) nothrow {
     alias da_iluCompareImage = ILboolean function( ILuint );
     alias da_iluContrast = ILboolean function( ILfloat );
     alias da_iluCrop = ILboolean function( ILuint, ILuint, ILuint, ILuint, ILuint, ILuint );
-    alias da_iluDeleteImage = ILvoid function( ILuint );
+    alias da_iluDeleteImage = void function( ILuint );
     alias da_iluEdgeDetectE = ILboolean function();
     alias da_iluEdgeDetectP = ILboolean function();
     alias da_iluEdgeDetectS = ILboolean function();
@@ -132,26 +134,27 @@ extern( System ) nothrow {
     alias da_iluFlipImage = ILboolean function();
     alias da_iluGammaCorrect = ILboolean function( ILfloat );
     alias da_iluGenImage = ILuint function();
-    alias da_iluGetImageInfo = ILvoid function( ILinfo* );
+    alias da_iluGetImageInfo = void function( ILinfo* );
     alias da_iluGetInteger = ILint function( ILenum );
-    alias da_iluGetIntegerv = ILvoid function( ILenum, ILint* );
+    alias da_iluGetIntegerv = void function( ILenum, ILint* );
     alias da_iluGetString = ILstring function( ILenum );
-    alias da_iluImageParameter = ILvoid function( ILenum, ILenum );
-    alias da_iluInit = ILvoid function();
+    alias da_iluImageParameter = void function( ILenum, ILenum );
+    alias da_iluInit = void function();
     alias da_iluInvertAlpha = ILboolean function();
     alias da_iluLoadImage = ILuint function( ILconst_string );
     alias da_iluMirror = ILboolean function();
     alias da_iluNegative = ILboolean function();
     alias da_iluNoisify = ILboolean function( ILclampf );
     alias da_iluPixelize = ILboolean function( ILuint );
-    alias da_iluRegionfv = ILvoid function( ILpointf*, ILuint );
-    alias da_iluRegioniv = ILvoid function( ILpointi*, ILuint );
+    alias da_iluRegionfv = void function( ILpointf*, ILuint );
+    alias da_iluRegioniv = void function( ILpointi*, ILuint );
     alias da_iluReplaceColour = ILboolean function( ILubyte, ILubyte, ILubyte, ILfloat );
     alias da_iluRotate = ILboolean function( ILfloat );
     alias da_iluRotate3D = ILboolean function( ILfloat, ILfloat, ILfloat, ILfloat );
     alias da_iluSaturate1f = ILboolean function( ILfloat );
     alias da_iluSaturate4f = ILboolean function( ILfloat, ILfloat, ILfloat, ILfloat );
     alias da_iluScale = ILboolean function( ILuint, ILuint, ILuint );
+    alias da_iluScaleAlpha = ILboolean function( ILfloat );
     alias da_iluScaleColours = ILboolean function( ILfloat, ILfloat, ILfloat );
     alias da_iluSetLanguage = ILboolean function( ILenum );
     alias da_iluSharpen = ILboolean function( ILfloat, ILuint );
@@ -201,6 +204,7 @@ __gshared {
     da_iluSaturate1f iluSaturate1f;
     da_iluSaturate4f iluSaturate4f;
     da_iluScale iluScale;
+    da_iluScaleAlpha iluScaleAlpha;
     da_iluScaleColours iluScaleColours;
     da_iluSetLanguage iluSetLanguage;
     da_iluSharpen iluSharpen;
@@ -261,6 +265,7 @@ class DerelictILULoader : SharedLibLoader
         bindFunc( cast( void** )&iluSaturate1f, "iluSaturate1f" );
         bindFunc( cast( void** )&iluSaturate4f, "iluSaturate4f" );
         bindFunc( cast( void** )&iluScale, "iluScale" );
+        bindFunc( cast( void** )&iluScaleAlpha, "iluScaleAlpha" );
         bindFunc( cast( void** )&iluScaleColours, "iluScaleColours" );
         bindFunc( cast( void** )&iluSetLanguage, "iluSetLanguage" );
         bindFunc( cast( void** )&iluSharpen, "iluSharpen" );
