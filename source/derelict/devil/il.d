@@ -31,14 +31,14 @@ private {
     import derelict.util.loader;
     import derelict.util.system;
 
-    static if( Derelict_OS_Windows )
+    static if(Derelict_OS_Windows)
         enum libNames = "devil.dll";
-    else static if ( Derelict_OS_Mac )
+    else static if (Derelict_OS_Mac)
         enum libNames = "libIL.dylib";
-    else static if( Derelict_OS_Posix )
+    else static if(Derelict_OS_Posix)
         enum libNames = "libIL.so";
     else
-        static assert( 0, "Need to implement DevIL libNames for this operating system." );
+        static assert(0, "Need to implement DevIL libNames for this operating system.");
 }
 
 alias ILenum = uint;
@@ -58,15 +58,15 @@ alias ILclampd = double;
 alias ILint64 = long;
 alias ILuint64 = ulong;
 
-version( DerelictIL_Unicode ) {
+version(DerelictIL_Unicode) {
     alias ILchar = wchar;
     alias ILstring = wchar*;
-    alias ILconst_string = const( wchar )*;
+    alias ILconst_string = const(wchar)*;
 }
 else {
     alias ILchar = char;
     alias ILstring = char*;
-    alias ILconst_string = const( char )*;
+    alias ILconst_string = const(char)*;
 }
 
 enum : ILboolean {
@@ -105,8 +105,8 @@ enum : ILenum {
     IL_LOAD_EXT = 0x1F01,
     IL_SAVE_EXT = 0x1F02,
 
-    IL_VERSION_1_7_8 = 1,
-    IL_VERSION = 178,
+    IL_VERSION_1_8_0 = 1,
+    IL_VERSION = 180,
 
     IL_ORIGIN_BIT = 0x00000001,
     IL_FILE_BIT = 0x00000002,
@@ -179,6 +179,7 @@ enum : ILenum {
     IL_DPX = 0x450,
     IL_UTX = 0x451,
     IL_MP3 = 0x0452,
+    IL_KTX = 0x0453,
 
     IL_JASC_PAL = 0x0475,
 
@@ -352,32 +353,32 @@ enum : ILint {
 alias ILHANDLE = void*;
 
 // Callbacks
-extern( System ) nothrow {
-    alias fCloseRProc = void function( ILHANDLE );
-    alias fEofProc = ILboolean function( ILHANDLE );
-    alias fGetcProc = ILint function( ILHANDLE );
-    alias fOpenRProc = ILHANDLE function( ILconst_string );
-    alias fReadProc = ILint function( void*,ILuint,ILuint,ILHANDLE );
-    alias fSeekRProc = ILint function( ILHANDLE,ILint,ILint );
-    alias fTellRProc = ILint function( ILHANDLE );
+extern(System) nothrow {
+    alias fCloseRProc = void function(ILHANDLE);
+    alias fEofProc = ILboolean function(ILHANDLE);
+    alias fGetcProc = ILint function(ILHANDLE);
+    alias fOpenRProc = ILHANDLE function(ILconst_string);
+    alias fReadProc = ILint function(void*,ILuint,ILuint,ILHANDLE);
+    alias fSeekRProc = ILint function(ILHANDLE,ILint,ILint);
+    alias fTellRProc = ILint function(ILHANDLE);
 
-    alias fCloseWProc = void function( ILHANDLE );
-    alias fOpenWProc = ILHANDLE function( ILconst_string );
-    alias fPutcProc = ILint function( ILubyte,ILHANDLE );
-    alias fSeekWProc = ILint function( ILHANDLE,ILint,ILint );
-    alias fTellWProc = ILint function( ILHANDLE );
-    alias fWriteProc = ILint function( const( void )*,ILuint,ILuint,ILHANDLE );
+    alias fCloseWProc = void function(ILHANDLE);
+    alias fOpenWProc = ILHANDLE function(ILconst_string);
+    alias fPutcProc = ILint function(ILubyte,ILHANDLE);
+    alias fSeekWProc = ILint function(ILHANDLE,ILint,ILint);
+    alias fTellWProc = ILint function(ILHANDLE);
+    alias fWriteProc = ILint function(const(void)*,ILuint,ILuint,ILHANDLE);
 
-    alias mAlloc = void* function( const( ILsizei ) );
-    alias mFree = void function( const( void )* );
+    alias mAlloc = void* function(const(ILsizei));
+    alias mFree = void function(const(void)*);
 
-    alias IL_LOADPROC = ILenum function( ILconst_string );
-    alias IL_SAVEPROC = ILenum function( ILconst_string );
+    alias IL_LOADPROC = ILenum function(ILconst_string);
+    alias IL_SAVEPROC = ILenum function(ILconst_string);
 }
 
 // API
-extern( System ) @nogc nothrow {
-    alias da_ilActiveFace = ILboolean function( ILuint );
+extern(System) @nogc nothrow {
+    alias da_ilActiveFace = ILboolean function(ILuint);
     alias da_ilActiveImage = ILboolean function(ILuint);
     alias da_ilActiveLayer = ILboolean function(ILuint);
     alias da_ilActiveMipmap = ILboolean function(ILuint);
@@ -389,7 +390,7 @@ extern( System ) @nogc nothrow {
     alias da_ilClearColour = void function(ILclampf,ILclampf,ILclampf,ILclampf);
     alias da_ilClearImage = ILboolean function();
     alias da_ilCloneCurImage = ILuint function();
-    alias da_ilCompressDXT = ILubyte* function( ILubyte*,ILuint,ILuint,ILuint,ILenum,ILuint* );
+    alias da_ilCompressDXT = ILubyte* function(ILubyte*,ILuint,ILuint,ILuint,ILenum,ILuint*);
     alias da_ilCompressFunc = ILboolean function(ILenum);
     alias da_ilConvertImage = ILboolean function(ILenum,ILenum);
     alias da_ilConvertPal = ILboolean function(ILenum);
@@ -399,9 +400,9 @@ extern( System ) @nogc nothrow {
     alias da_ilDefaultImage = ILboolean function();
     alias da_ilDeleteImage = void function(ILuint);
     alias da_ilDeleteImages = void function(ILsizei,in ILuint*);
-    alias da_ilDetermineType = ILenum function( ILconst_string );
-    alias da_ilDetermineTypeF = ILenum function( ILHANDLE );
-    alias da_ilDetermineTypeL = ILenum function( const( void )*,ILuint );
+    alias da_ilDetermineType = ILenum function(ILconst_string);
+    alias da_ilDetermineTypeF = ILenum function(ILHANDLE);
+    alias da_ilDetermineTypeL = ILenum function(const(void)*,ILuint);
     alias da_ilDisable = ILboolean function(ILenum);
     alias da_ilDxtcDataToImage = ILboolean function();
     alias da_ilDxtcDataToSurface = ILboolean function();
@@ -423,7 +424,7 @@ extern( System ) @nogc nothrow {
     alias da_ilGetString = ILstring function(ILenum);
     alias da_ilHint = void function(ILenum,ILenum);
     alias da_ilInit = void function();
-    alias da_ilImageToDxtcData = ILboolean function( ILenum );
+    alias da_ilImageToDxtcData = ILboolean function(ILenum);
     alias da_ilIsDisabled = ILboolean function(ILenum);
     alias da_ilIsEnabled = ILboolean function(ILenum);
     alias da_ilIsImage = ILboolean function(ILuint);
@@ -468,9 +469,9 @@ extern( System ) @nogc nothrow {
     alias da_ilSetString = void function(ILenum,in char*);
     alias da_ilSetWrite = void function(fOpenWProc,fCloseWProc,fPutcProc,fSeekWProc,fTellWProc,fWriteProc);
     alias da_ilShutDown = void function();
-    alias da_ilSurfaceToDxtcData = ILboolean function( ILenum );
+    alias da_ilSurfaceToDxtcData = ILboolean function(ILenum);
     alias da_ilTexImage = ILboolean function(ILuint,ILuint,ILuint,ILubyte,ILenum,ILenum,void*);
-    alias da_ilTexImageDxtc = ILboolean function( ILint,ILuint,ILuint,ILubyte,ILenum,ILenum,void* );
+    alias da_ilTexImageDxtc = ILboolean function(ILint,ILuint,ILuint,ILubyte,ILenum,ILenum,void*);
     alias da_ilTypeFromExt = ILenum function(ILconst_string);
     alias da_ilTypeFunc = ILboolean function(ILenum);
     alias da_ilLoadData = ILboolean function(ILconst_string,ILuint,ILuint,ILuint,ILubyte);
@@ -587,110 +588,110 @@ __gshared {
 
 class DerelictILLoader : SharedLibLoader {
     public this() {
-        super( libNames );
+        super(libNames);
     }
 
     protected override void loadSymbols() {
-        bindFunc( cast( void** )&ilActiveFace, "ilActiveFace" );
-        bindFunc( cast( void** )&ilActiveImage, "ilActiveImage" );
-        bindFunc( cast( void** )&ilActiveLayer, "ilActiveLayer" );
-        bindFunc( cast( void** )&ilActiveMipmap, "ilActiveMipmap" );
-        bindFunc( cast( void** )&ilApplyPal, "ilApplyPal" );
-        bindFunc( cast( void** )&ilApplyProfile, "ilApplyProfile" );
-        bindFunc( cast( void** )&ilBindImage, "ilBindImage" );
-        bindFunc( cast( void** )&ilBlit, "ilBlit" );
-        bindFunc( cast( void** )&ilClampNTSC, "ilClampNTSC" );
-        bindFunc( cast( void** )&ilClearColour, "ilClearColour" );
-        bindFunc( cast( void** )&ilClearImage, "ilClearImage" );
-        bindFunc( cast( void** )&ilCloneCurImage, "ilCloneCurImage" );
-        bindFunc( cast( void** )&ilCompressDXT, "ilCompressDXT" );
-        bindFunc( cast( void** )&ilCompressFunc, "ilCompressFunc" );
-        bindFunc( cast( void** )&ilConvertImage, "ilConvertImage" );
-        bindFunc( cast( void** )&ilConvertPal, "ilConvertPal" );
-        bindFunc( cast( void** )&ilCopyImage, "ilCopyImage" );
-        bindFunc( cast( void** )&ilCopyPixels, "ilCopyPixels" );
-        bindFunc( cast( void** )&ilCreateSubImage, "ilCreateSubImage" );
-        bindFunc( cast( void** )&ilDefaultImage, "ilDefaultImage" );
-        bindFunc( cast( void** )&ilDeleteImage, "ilDeleteImage" );
-        bindFunc( cast( void** )&ilDeleteImages, "ilDeleteImages" );
-        bindFunc( cast( void** )&ilDetermineType, "ilDetermineType" );
-        bindFunc( cast( void** )&ilDetermineTypeF, "ilDetermineTypeF" );
-        bindFunc( cast( void** )&ilDetermineTypeL, "ilDetermineTypeL" );
-        bindFunc( cast( void** )&ilDisable, "ilDisable" );
-        bindFunc( cast( void** )&ilDxtcDataToImage, "ilDxtcDataToImage" );
-        bindFunc( cast( void** )&ilDxtcDataToSurface, "ilDxtcDataToSurface" );
-        bindFunc( cast( void** )&ilEnable, "ilEnable" );
-        //bindFunc( cast( void** )&ilFlipSurfaceDxtcData, "ilFlipSurfaceDxtcData" );
-        bindFunc( cast( void** )&ilFormatFunc, "ilFormatFunc" );
-        bindFunc( cast( void** )&ilGenImages, "ilGenImages" );
-        bindFunc( cast( void** )&ilGenImage, "ilGenImage" );
-        bindFunc( cast( void** )&ilGetAlpha, "ilGetAlpha" );
-        bindFunc( cast( void** )&ilGetBoolean, "ilGetBoolean" );
-        bindFunc( cast( void** )&ilGetBooleanv, "ilGetBooleanv" );
-        bindFunc( cast( void** )&ilGetData, "ilGetData" );
-        bindFunc( cast( void** )&ilGetDXTCData, "ilGetDXTCData" );
-        bindFunc( cast( void** )&ilGetError, "ilGetError" );
-        bindFunc( cast( void** )&ilGetInteger, "ilGetInteger" );
-        bindFunc( cast( void** )&ilGetIntegerv, "ilGetIntegerv" );
-        bindFunc( cast( void** )&ilGetLumpPos, "ilGetLumpPos" );
-        bindFunc( cast( void** )&ilGetPalette, "ilGetPalette" );
-        bindFunc( cast( void** )&ilGetString, "ilGetString" );
-        bindFunc( cast( void** )&ilHint, "ilHint" );
-        bindFunc( cast( void** )&ilInit, "ilInit" );
-        bindFunc( cast( void** )&ilImageToDxtcData, "ilImageToDxtcData" );
-        bindFunc( cast( void** )&ilIsDisabled, "ilIsDisabled" );
-        bindFunc( cast( void** )&ilIsEnabled, "ilIsEnabled" );
-        bindFunc( cast( void** )&ilIsImage, "ilIsImage" );
-        bindFunc( cast( void** )&ilIsValid, "ilIsValid" );
-        bindFunc( cast( void** )&ilIsValidF, "ilIsValidF" );
-        bindFunc( cast( void** )&ilIsValidL, "ilIsValidL" );
-        bindFunc( cast( void** )&ilKeyColour, "ilKeyColour" );
-        bindFunc( cast( void** )&ilLoad, "ilLoad" );
-        bindFunc( cast( void** )&ilLoadF, "ilLoadF" );
-        bindFunc( cast( void** )&ilLoadImage, "ilLoadImage" );
-        bindFunc( cast( void** )&ilLoadL, "ilLoadL" );
-        bindFunc( cast( void** )&ilLoadPal, "ilLoadPal" );
-        bindFunc( cast( void** )&ilModAlpha, "ilModAlpha" );
-        bindFunc( cast( void** )&ilOriginFunc, "ilOriginFunc" );
-        bindFunc( cast( void** )&ilOverlayImage, "ilOverlayImage" );
-        bindFunc( cast( void** )&ilPopAttrib, "ilPopAttrib" );
-        bindFunc( cast( void** )&ilPushAttrib, "ilPushAttrib" );
-        bindFunc( cast( void** )&ilRegisterFormat, "ilRegisterFormat" );
-        bindFunc( cast( void** )&ilRegisterLoad, "ilRegisterLoad" );
-        bindFunc( cast( void** )&ilRegisterMipNum, "ilRegisterMipNum" );
-        bindFunc( cast( void** )&ilRegisterNumImages, "ilRegisterNumImages" );
-        bindFunc( cast( void** )&ilRegisterOrigin, "ilRegisterOrigin" );
-        bindFunc( cast( void** )&ilRegisterPal, "ilRegisterPal" );
-        bindFunc( cast( void** )&ilRegisterSave, "ilRegisterSave" );
-        bindFunc( cast( void** )&ilRegisterType, "ilRegisterType" );
-        bindFunc( cast( void** )&ilRemoveLoad, "ilRemoveLoad" );
-        bindFunc( cast( void** )&ilRemoveSave, "ilRemoveSave" );
-        bindFunc( cast( void** )&ilResetRead, "ilResetRead" );
-        bindFunc( cast( void** )&ilResetWrite, "ilResetWrite" );
-        bindFunc( cast( void** )&ilSave, "ilSave" );
-        bindFunc( cast( void** )&ilSaveF, "ilSaveF" );
-        bindFunc( cast( void** )&ilSaveImage, "ilSaveImage" );
-        bindFunc( cast( void** )&ilSaveL, "ilSaveL" );
-        bindFunc( cast( void** )&ilSavePal, "ilSavePal" );
-        bindFunc( cast( void** )&ilSetAlpha, "ilSetAlpha" );
-        bindFunc( cast( void** )&ilSetData, "ilSetData" );
-        bindFunc( cast( void** )&ilSetDuration, "ilSetDuration" );
-        bindFunc( cast( void** )&ilSetInteger, "ilSetInteger" );
-        bindFunc( cast( void** )&ilSetMemory, "ilSetMemory" );
-        bindFunc( cast( void** )&ilSetPixels, "ilSetPixels" );
-        bindFunc( cast( void** )&ilSetRead, "ilSetRead" );
-        bindFunc( cast( void** )&ilSetString, "ilSetString" );
-        bindFunc( cast( void** )&ilSetWrite, "ilSetWrite" );
-        bindFunc( cast( void** )&ilShutDown, "ilShutDown" );
-        bindFunc( cast( void** )&ilSurfaceToDxtcData, "ilSurfaceToDxtcData" );
-        bindFunc( cast( void** )&ilTexImage, "ilTexImage" );
-        bindFunc( cast( void** )&ilTexImageDxtc, "ilTexImageDxtc" );
-        bindFunc( cast( void** )&ilTypeFromExt, "ilTypeFromExt" );
-        bindFunc( cast( void** )&ilTypeFunc, "ilTypeFunc" );
-        bindFunc( cast( void** )&ilLoadData, "ilLoadData" );
-        bindFunc( cast( void** )&ilLoadDataF, "ilLoadDataF" );
-        bindFunc( cast( void** )&ilLoadDataL, "ilLoadDataL" );
-        bindFunc( cast( void** )&ilSaveData, "ilSaveData" );
+        bindFunc(cast(void**)&ilActiveFace, "ilActiveFace");
+        bindFunc(cast(void**)&ilActiveImage, "ilActiveImage");
+        bindFunc(cast(void**)&ilActiveLayer, "ilActiveLayer");
+        bindFunc(cast(void**)&ilActiveMipmap, "ilActiveMipmap");
+        bindFunc(cast(void**)&ilApplyPal, "ilApplyPal");
+        bindFunc(cast(void**)&ilApplyProfile, "ilApplyProfile");
+        bindFunc(cast(void**)&ilBindImage, "ilBindImage");
+        bindFunc(cast(void**)&ilBlit, "ilBlit");
+        bindFunc(cast(void**)&ilClampNTSC, "ilClampNTSC");
+        bindFunc(cast(void**)&ilClearColour, "ilClearColour");
+        bindFunc(cast(void**)&ilClearImage, "ilClearImage");
+        bindFunc(cast(void**)&ilCloneCurImage, "ilCloneCurImage");
+        bindFunc(cast(void**)&ilCompressDXT, "ilCompressDXT");
+        bindFunc(cast(void**)&ilCompressFunc, "ilCompressFunc");
+        bindFunc(cast(void**)&ilConvertImage, "ilConvertImage");
+        bindFunc(cast(void**)&ilConvertPal, "ilConvertPal");
+        bindFunc(cast(void**)&ilCopyImage, "ilCopyImage");
+        bindFunc(cast(void**)&ilCopyPixels, "ilCopyPixels");
+        bindFunc(cast(void**)&ilCreateSubImage, "ilCreateSubImage");
+        bindFunc(cast(void**)&ilDefaultImage, "ilDefaultImage");
+        bindFunc(cast(void**)&ilDeleteImage, "ilDeleteImage");
+        bindFunc(cast(void**)&ilDeleteImages, "ilDeleteImages");
+        bindFunc(cast(void**)&ilDetermineType, "ilDetermineType");
+        bindFunc(cast(void**)&ilDetermineTypeF, "ilDetermineTypeF");
+        bindFunc(cast(void**)&ilDetermineTypeL, "ilDetermineTypeL");
+        bindFunc(cast(void**)&ilDisable, "ilDisable");
+        bindFunc(cast(void**)&ilDxtcDataToImage, "ilDxtcDataToImage");
+        bindFunc(cast(void**)&ilDxtcDataToSurface, "ilDxtcDataToSurface");
+        bindFunc(cast(void**)&ilEnable, "ilEnable");
+        //bindFunc(cast(void**)&ilFlipSurfaceDxtcData, "ilFlipSurfaceDxtcData");
+        bindFunc(cast(void**)&ilFormatFunc, "ilFormatFunc");
+        bindFunc(cast(void**)&ilGenImages, "ilGenImages");
+        bindFunc(cast(void**)&ilGenImage, "ilGenImage");
+        bindFunc(cast(void**)&ilGetAlpha, "ilGetAlpha");
+        bindFunc(cast(void**)&ilGetBoolean, "ilGetBoolean");
+        bindFunc(cast(void**)&ilGetBooleanv, "ilGetBooleanv");
+        bindFunc(cast(void**)&ilGetData, "ilGetData");
+        bindFunc(cast(void**)&ilGetDXTCData, "ilGetDXTCData");
+        bindFunc(cast(void**)&ilGetError, "ilGetError");
+        bindFunc(cast(void**)&ilGetInteger, "ilGetInteger");
+        bindFunc(cast(void**)&ilGetIntegerv, "ilGetIntegerv");
+        bindFunc(cast(void**)&ilGetLumpPos, "ilGetLumpPos");
+        bindFunc(cast(void**)&ilGetPalette, "ilGetPalette");
+        bindFunc(cast(void**)&ilGetString, "ilGetString");
+        bindFunc(cast(void**)&ilHint, "ilHint");
+        bindFunc(cast(void**)&ilInit, "ilInit");
+        bindFunc(cast(void**)&ilImageToDxtcData, "ilImageToDxtcData");
+        bindFunc(cast(void**)&ilIsDisabled, "ilIsDisabled");
+        bindFunc(cast(void**)&ilIsEnabled, "ilIsEnabled");
+        bindFunc(cast(void**)&ilIsImage, "ilIsImage");
+        bindFunc(cast(void**)&ilIsValid, "ilIsValid");
+        bindFunc(cast(void**)&ilIsValidF, "ilIsValidF");
+        bindFunc(cast(void**)&ilIsValidL, "ilIsValidL");
+        bindFunc(cast(void**)&ilKeyColour, "ilKeyColour");
+        bindFunc(cast(void**)&ilLoad, "ilLoad");
+        bindFunc(cast(void**)&ilLoadF, "ilLoadF");
+        bindFunc(cast(void**)&ilLoadImage, "ilLoadImage");
+        bindFunc(cast(void**)&ilLoadL, "ilLoadL");
+        bindFunc(cast(void**)&ilLoadPal, "ilLoadPal");
+        bindFunc(cast(void**)&ilModAlpha, "ilModAlpha");
+        bindFunc(cast(void**)&ilOriginFunc, "ilOriginFunc");
+        bindFunc(cast(void**)&ilOverlayImage, "ilOverlayImage");
+        bindFunc(cast(void**)&ilPopAttrib, "ilPopAttrib");
+        bindFunc(cast(void**)&ilPushAttrib, "ilPushAttrib");
+        bindFunc(cast(void**)&ilRegisterFormat, "ilRegisterFormat");
+        bindFunc(cast(void**)&ilRegisterLoad, "ilRegisterLoad");
+        bindFunc(cast(void**)&ilRegisterMipNum, "ilRegisterMipNum");
+        bindFunc(cast(void**)&ilRegisterNumImages, "ilRegisterNumImages");
+        bindFunc(cast(void**)&ilRegisterOrigin, "ilRegisterOrigin");
+        bindFunc(cast(void**)&ilRegisterPal, "ilRegisterPal");
+        bindFunc(cast(void**)&ilRegisterSave, "ilRegisterSave");
+        bindFunc(cast(void**)&ilRegisterType, "ilRegisterType");
+        bindFunc(cast(void**)&ilRemoveLoad, "ilRemoveLoad");
+        bindFunc(cast(void**)&ilRemoveSave, "ilRemoveSave");
+        bindFunc(cast(void**)&ilResetRead, "ilResetRead");
+        bindFunc(cast(void**)&ilResetWrite, "ilResetWrite");
+        bindFunc(cast(void**)&ilSave, "ilSave");
+        bindFunc(cast(void**)&ilSaveF, "ilSaveF");
+        bindFunc(cast(void**)&ilSaveImage, "ilSaveImage");
+        bindFunc(cast(void**)&ilSaveL, "ilSaveL");
+        bindFunc(cast(void**)&ilSavePal, "ilSavePal");
+        bindFunc(cast(void**)&ilSetAlpha, "ilSetAlpha");
+        bindFunc(cast(void**)&ilSetData, "ilSetData");
+        bindFunc(cast(void**)&ilSetDuration, "ilSetDuration");
+        bindFunc(cast(void**)&ilSetInteger, "ilSetInteger");
+        bindFunc(cast(void**)&ilSetMemory, "ilSetMemory");
+        bindFunc(cast(void**)&ilSetPixels, "ilSetPixels");
+        bindFunc(cast(void**)&ilSetRead, "ilSetRead");
+        bindFunc(cast(void**)&ilSetString, "ilSetString");
+        bindFunc(cast(void**)&ilSetWrite, "ilSetWrite");
+        bindFunc(cast(void**)&ilShutDown, "ilShutDown");
+        bindFunc(cast(void**)&ilSurfaceToDxtcData, "ilSurfaceToDxtcData");
+        bindFunc(cast(void**)&ilTexImage, "ilTexImage");
+        bindFunc(cast(void**)&ilTexImageDxtc, "ilTexImageDxtc");
+        bindFunc(cast(void**)&ilTypeFromExt, "ilTypeFromExt");
+        bindFunc(cast(void**)&ilTypeFunc, "ilTypeFunc");
+        bindFunc(cast(void**)&ilLoadData, "ilLoadData");
+        bindFunc(cast(void**)&ilLoadDataF, "ilLoadDataF");
+        bindFunc(cast(void**)&ilLoadDataL, "ilLoadDataL");
+        bindFunc(cast(void**)&ilSaveData, "ilSaveData");
     }
 }
 

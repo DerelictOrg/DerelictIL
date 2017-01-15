@@ -43,8 +43,8 @@ private {
 }
 
 enum : ILenum {
-    ILUT_VERSION_1_7_8 = 1,
-    ILUT_VERSION = 178,
+    ILUT_VERSION_1_8_0 = 1,
+    ILUT_VERSION = 180,
 
     ILUT_OPENGL_BIT = 0x00000001,
     ILUT_D3D_BIT = 0x00000002,

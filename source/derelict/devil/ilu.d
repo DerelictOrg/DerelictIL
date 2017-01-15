@@ -32,19 +32,19 @@ private {
     import derelict.util.system;
     import derelict.devil.il;
 
-    static if( Derelict_OS_Windows )
+    static if(Derelict_OS_Windows)
         enum libNames = "ilu.dll";
-    else static if ( Derelict_OS_Mac )
+    else static if (Derelict_OS_Mac)
         enum libNames = "libILU.dylib";
-    else static if( Derelict_OS_Posix )
+    else static if(Derelict_OS_Posix)
         enum libNames = "libILU.so";
     else
-        static assert( 0, "Need to implement ILU libNames for this operating system." );
+        static assert(0, "Need to implement ILU libNames for this operating system.");
 }
 
 enum : ILenum {
-    ILU_VERSION_1_7_8 = 1,
-    ILU_VERSION = 178,
+    ILU_VERSION_1_8_0 = 1,
+    ILU_VERSION = 180,
 
     ILU_FILTER = 0x2600,
     ILU_NEAREST = 0x2601,
@@ -82,6 +82,7 @@ enum : ILenum {
     ILU_SPANISH = 0x804,
     ILU_GERMAN = 0x0805,
     ILU_FRENCH = 0x0806,
+    ILU_ITALIAN = 0x0807,
 }
 
 struct ILinfo {
@@ -112,54 +113,56 @@ struct ILpointi {
     ILint x, y;
 }
 
-extern( System ) @nogc nothrow {
+extern(System) @nogc nothrow {
     alias da_iluAlienify = ILboolean function();
-    alias da_iluBlurAvg = ILboolean function( ILuint );
-    alias da_iluBlurGaussian = ILboolean function( ILuint );
+    alias da_iluBlurAvg = ILboolean function(ILuint);
+    alias da_iluBlurGaussian = ILboolean function(ILuint);
     alias da_iluBuildMipmaps = ILboolean function();
     alias da_iluColoursUsed = ILuint function();
-    alias da_iluCompareImage = ILboolean function( ILuint );
-    alias da_iluContrast = ILboolean function( ILfloat );
-    alias da_iluCrop = ILboolean function( ILuint, ILuint, ILuint, ILuint, ILuint, ILuint );
-    alias da_iluDeleteImage = void function( ILuint );
+    alias da_iluCompareImage = ILboolean function(ILuint);
+    alias da_iluContrast = ILboolean function(ILfloat);
+    alias da_iluCrop = ILboolean function(ILuint, ILuint, ILuint, ILuint, ILuint, ILuint);
+    alias da_iluDeleteImage = void function(ILuint);
     alias da_iluEdgeDetectE = ILboolean function();
     alias da_iluEdgeDetectP = ILboolean function();
     alias da_iluEdgeDetectS = ILboolean function();
     alias da_iluEmboss = ILboolean function();
-    alias da_iluEnlargeCanvas = ILboolean function( ILuint, ILuint, ILuint );
-    alias da_iluEnlargeImage = ILboolean function( ILfloat, ILfloat, ILfloat );
+    alias da_iluEnlargeCanvas = ILboolean function(ILuint, ILuint, ILuint);
+    alias da_iluEnlargeImage = ILboolean function(ILfloat, ILfloat, ILfloat);
     alias da_iluEqualize = ILboolean function();
-    alias da_iluErrorString = ILconst_string function( ILenum );
-    alias da_iluConvolution = ILboolean function( ILint*, ILint, ILint );
+    alias da_iluEqualize2 = ILboolean function();
+    alias da_iluErrorString = ILconst_string function(ILenum);
+    alias da_iluConvolution = ILboolean function(ILint*, ILint, ILint);
     alias da_iluFlipImage = ILboolean function();
-    alias da_iluGammaCorrect = ILboolean function( ILfloat );
+    alias da_iluGammaCorrect = ILboolean function(ILfloat);
     alias da_iluGenImage = ILuint function();
-    alias da_iluGetImageInfo = void function( ILinfo* );
-    alias da_iluGetInteger = ILint function( ILenum );
-    alias da_iluGetIntegerv = void function( ILenum, ILint* );
-    alias da_iluGetString = ILstring function( ILenum );
-    alias da_iluImageParameter = void function( ILenum, ILenum );
+    alias da_iluGetImageInfo = void function(ILinfo*);
+    alias da_iluGetInteger = ILint function(ILenum);
+    alias da_iluGetIntegerv = void function(ILenum, ILint*);
+    alias da_iluGetString = ILstring function(ILenum);
+    alias da_iluImageParameter = void function(ILenum, ILenum);
     alias da_iluInit = void function();
     alias da_iluInvertAlpha = ILboolean function();
-    alias da_iluLoadImage = ILuint function( ILconst_string );
+    alias da_iluLoadImage = ILuint function(ILconst_string);
     alias da_iluMirror = ILboolean function();
     alias da_iluNegative = ILboolean function();
-    alias da_iluNoisify = ILboolean function( ILclampf );
-    alias da_iluPixelize = ILboolean function( ILuint );
-    alias da_iluRegionfv = void function( ILpointf*, ILuint );
-    alias da_iluRegioniv = void function( ILpointi*, ILuint );
-    alias da_iluReplaceColour = ILboolean function( ILubyte, ILubyte, ILubyte, ILfloat );
-    alias da_iluRotate = ILboolean function( ILfloat );
-    alias da_iluRotate3D = ILboolean function( ILfloat, ILfloat, ILfloat, ILfloat );
-    alias da_iluSaturate1f = ILboolean function( ILfloat );
-    alias da_iluSaturate4f = ILboolean function( ILfloat, ILfloat, ILfloat, ILfloat );
-    alias da_iluScale = ILboolean function( ILuint, ILuint, ILuint );
-    alias da_iluScaleAlpha = ILboolean function( ILfloat );
-    alias da_iluScaleColours = ILboolean function( ILfloat, ILfloat, ILfloat );
-    alias da_iluSetLanguage = ILboolean function( ILenum );
-    alias da_iluSharpen = ILboolean function( ILfloat, ILuint );
+    alias da_iluNoisify = ILboolean function(ILclampf);
+    alias da_iluPixelize = ILboolean function(ILuint);
+    alias da_iluRegionfv = void function(ILpointf*, ILuint);
+    alias da_iluRegioniv = void function(ILpointi*, ILuint);
+    alias da_iluReplaceColour = ILboolean function(ILubyte, ILubyte, ILubyte, ILfloat);
+    alias da_iluRotate = ILboolean function(ILfloat);
+    alias da_iluRotate3D = ILboolean function(ILfloat, ILfloat, ILfloat, ILfloat);
+    alias da_iluSaturate1f = ILboolean function(ILfloat);
+    alias da_iluSaturate4f = ILboolean function(ILfloat, ILfloat, ILfloat, ILfloat);
+    alias da_iluScale = ILboolean function(ILuint, ILuint, ILuint);
+    alias da_iluScaleAlpha = ILboolean function(ILfloat);
+    alias da_iluScaleColours = ILboolean function(ILfloat, ILfloat, ILfloat);
+    alias da_iluSepia = ILboolean function();
+    alias da_iluSetLanguage = ILboolean function(ILenum);
+    alias da_iluSharpen = ILboolean function(ILfloat, ILuint);
     alias da_iluSwapColours = ILboolean function();
-    alias da_iluWave = ILboolean function( ILfloat );
+    alias da_iluWave = ILboolean function(ILfloat);
 }
 
 __gshared {
@@ -179,6 +182,7 @@ __gshared {
     da_iluEnlargeCanvas iluEnlargeCanvas;
     da_iluEnlargeImage iluEnlargeImage;
     da_iluEqualize iluEqualize;
+    da_iluEqualize2 iluEqualize2;
     da_iluErrorString iluErrorString;
     da_iluConvolution iluConvolution;
     da_iluFlipImage iluFlipImage;
@@ -206,6 +210,7 @@ __gshared {
     da_iluScale iluScale;
     da_iluScaleAlpha iluScaleAlpha;
     da_iluScaleColours iluScaleColours;
+    da_iluSepia iluSepia;
     da_iluSetLanguage iluSetLanguage;
     da_iluSharpen iluSharpen;
     da_iluSwapColours iluSwapColours;
@@ -220,57 +225,59 @@ __gshared {
 class DerelictILULoader : SharedLibLoader
 {
     public this() {
-        super( libNames );
+        super(libNames);
     }
 
     protected override void loadSymbols() {
-        bindFunc( cast( void** )&iluAlienify, "iluAlienify" );
-        bindFunc( cast( void** )&iluBlurAvg, "iluBlurAvg" );
-        bindFunc( cast( void** )&iluBlurGaussian, "iluBlurGaussian" );
-        bindFunc( cast( void** )&iluBuildMipmaps, "iluBuildMipmaps" );
-        bindFunc( cast( void** )&iluColoursUsed, "iluColoursUsed" );
-        bindFunc( cast( void** )&iluCompareImage, "iluCompareImage" );
-        bindFunc( cast( void** )&iluContrast, "iluContrast" );
-        bindFunc( cast( void** )&iluCrop, "iluCrop" );
-        bindFunc( cast( void** )&iluDeleteImage, "iluDeleteImage" );
-        bindFunc( cast( void** )&iluEdgeDetectE, "iluEdgeDetectE" );
-        bindFunc( cast( void** )&iluEdgeDetectP, "iluEdgeDetectP" );
-        bindFunc( cast( void** )&iluEdgeDetectS, "iluEdgeDetectS" );
-        bindFunc( cast( void** )&iluEmboss, "iluEmboss" );
-        bindFunc( cast( void** )&iluEnlargeCanvas, "iluEnlargeCanvas" );
-        bindFunc( cast( void** )&iluEnlargeImage, "iluEnlargeImage" );
-        bindFunc( cast( void** )&iluEqualize, "iluEqualize" );
-        bindFunc( cast( void** )&iluErrorString, "iluErrorString" );
-        bindFunc( cast( void** )&iluConvolution, "iluConvolution" );
-        bindFunc( cast( void** )&iluFlipImage, "iluFlipImage" );
-        bindFunc( cast( void** )&iluGammaCorrect, "iluGammaCorrect" );
-        bindFunc( cast( void** )&iluGenImage, "iluGenImage" );
-        bindFunc( cast( void** )&iluGetImageInfo, "iluGetImageInfo" );
-        bindFunc( cast( void** )&iluGetInteger, "iluGetInteger" );
-        bindFunc( cast( void** )&iluGetIntegerv, "iluGetIntegerv" );
-        bindFunc( cast( void** )&iluGetString, "iluGetString" );
-        bindFunc( cast( void** )&iluImageParameter, "iluImageParameter" );
-        bindFunc( cast( void** )&iluInit, "iluInit" );
-        bindFunc( cast( void** )&iluInvertAlpha, "iluInvertAlpha" );
-        bindFunc( cast( void** )&iluLoadImage, "iluLoadImage" );
-        bindFunc( cast( void** )&iluMirror, "iluMirror" );
-        bindFunc( cast( void** )&iluNegative, "iluNegative" );
-        bindFunc( cast( void** )&iluNoisify, "iluNoisify" );
-        bindFunc( cast( void** )&iluPixelize, "iluPixelize" );
-        bindFunc( cast( void** )&iluRegionfv, "iluRegionfv" );
-        bindFunc( cast( void** )&iluRegioniv, "iluRegioniv" );
-        bindFunc( cast( void** )&iluReplaceColour, "iluReplaceColour" );
-        bindFunc( cast( void** )&iluRotate, "iluRotate" );
-        bindFunc( cast( void** )&iluRotate3D, "iluRotate3D" );
-        bindFunc( cast( void** )&iluSaturate1f, "iluSaturate1f" );
-        bindFunc( cast( void** )&iluSaturate4f, "iluSaturate4f" );
-        bindFunc( cast( void** )&iluScale, "iluScale" );
-        bindFunc( cast( void** )&iluScaleAlpha, "iluScaleAlpha" );
-        bindFunc( cast( void** )&iluScaleColours, "iluScaleColours" );
-        bindFunc( cast( void** )&iluSetLanguage, "iluSetLanguage" );
-        bindFunc( cast( void** )&iluSharpen, "iluSharpen" );
-        bindFunc( cast( void** )&iluSwapColours, "iluSwapColours" );
-        bindFunc( cast( void** )&iluWave, "iluWave" );
+        bindFunc(cast(void**)&iluAlienify, "iluAlienify");
+        bindFunc(cast(void**)&iluBlurAvg, "iluBlurAvg");
+        bindFunc(cast(void**)&iluBlurGaussian, "iluBlurGaussian");
+        bindFunc(cast(void**)&iluBuildMipmaps, "iluBuildMipmaps");
+        bindFunc(cast(void**)&iluColoursUsed, "iluColoursUsed");
+        bindFunc(cast(void**)&iluCompareImage, "iluCompareImage");
+        bindFunc(cast(void**)&iluContrast, "iluContrast");
+        bindFunc(cast(void**)&iluCrop, "iluCrop");
+        bindFunc(cast(void**)&iluDeleteImage, "iluDeleteImage");
+        bindFunc(cast(void**)&iluEdgeDetectE, "iluEdgeDetectE");
+        bindFunc(cast(void**)&iluEdgeDetectP, "iluEdgeDetectP");
+        bindFunc(cast(void**)&iluEdgeDetectS, "iluEdgeDetectS");
+        bindFunc(cast(void**)&iluEmboss, "iluEmboss");
+        bindFunc(cast(void**)&iluEnlargeCanvas, "iluEnlargeCanvas");
+        bindFunc(cast(void**)&iluEnlargeImage, "iluEnlargeImage");
+        bindFunc(cast(void**)&iluEqualize, "iluEqualize");
+        bindFunc(cast(void**)&iluEqualize2, "iluEqualize2");
+        bindFunc(cast(void**)&iluErrorString, "iluErrorString");
+        bindFunc(cast(void**)&iluConvolution, "iluConvolution");
+        bindFunc(cast(void**)&iluFlipImage, "iluFlipImage");
+        bindFunc(cast(void**)&iluGammaCorrect, "iluGammaCorrect");
+        bindFunc(cast(void**)&iluGenImage, "iluGenImage");
+        bindFunc(cast(void**)&iluGetImageInfo, "iluGetImageInfo");
+        bindFunc(cast(void**)&iluGetInteger, "iluGetInteger");
+        bindFunc(cast(void**)&iluGetIntegerv, "iluGetIntegerv");
+        bindFunc(cast(void**)&iluGetString, "iluGetString");
+        bindFunc(cast(void**)&iluImageParameter, "iluImageParameter");
+        bindFunc(cast(void**)&iluInit, "iluInit");
+        bindFunc(cast(void**)&iluInvertAlpha, "iluInvertAlpha");
+        bindFunc(cast(void**)&iluLoadImage, "iluLoadImage");
+        bindFunc(cast(void**)&iluMirror, "iluMirror");
+        bindFunc(cast(void**)&iluNegative, "iluNegative");
+        bindFunc(cast(void**)&iluNoisify, "iluNoisify");
+        bindFunc(cast(void**)&iluPixelize, "iluPixelize");
+        bindFunc(cast(void**)&iluRegionfv, "iluRegionfv");
+        bindFunc(cast(void**)&iluRegioniv, "iluRegioniv");
+        bindFunc(cast(void**)&iluReplaceColour, "iluReplaceColour");
+        bindFunc(cast(void**)&iluRotate, "iluRotate");
+        bindFunc(cast(void**)&iluRotate3D, "iluRotate3D");
+        bindFunc(cast(void**)&iluSaturate1f, "iluSaturate1f");
+        bindFunc(cast(void**)&iluSaturate4f, "iluSaturate4f");
+        bindFunc(cast(void**)&iluScale, "iluScale");
+        bindFunc(cast(void**)&iluScaleAlpha, "iluScaleAlpha");
+        bindFunc(cast(void**)&iluScaleColours, "iluScaleColours");
+        bindFunc(cast(void**)&iluSepia, "iluSepia");
+        bindFunc(cast(void**)&iluSetLanguage, "iluSetLanguage");
+        bindFunc(cast(void**)&iluSharpen, "iluSharpen");
+        bindFunc(cast(void**)&iluSwapColours, "iluSwapColours");
+        bindFunc(cast(void**)&iluWave, "iluWave");
     }
 }
 
