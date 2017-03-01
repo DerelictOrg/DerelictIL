@@ -1,0 +1,8 @@
+name "derelict-il"
+description "A dynamic binding to the DevIL library."
+homepage "https://github.com/DerelictOrg/DerelictIL"
+license "Boost"
+authors "Mike Parker"
+targetName "DerelictIL"
+targetPath "lib"
+dependency "derelict-util" version="~>3.0.0-alpha.2"

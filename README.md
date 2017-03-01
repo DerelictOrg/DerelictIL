@@ -3,7 +3,7 @@ DerelictIL
 
 A dynamic binding to version 1.8.0 of the [DevIL][1] library for the D Programming Language.
 
-Please see the [Derelict documentation][2], for information on how to build DerelictIL and load DevIL at run time. In the meantime, here's some sample code.
+Please see the sections on [Compiling and Linking][2] and [The Derelict Loader][3], in the Derelict documentation, for information on how to build DerelictIL and load DevIL at run time. In the meantime, here's some sample code.
 
 ```D
 import derelict.devil.il;
@@ -22,5 +22,6 @@ void main() {
 ```
 
 [1]: https://github.com/DentonW/DevIL
-[2]: https://derelictorg.github.io/
+[2]: http://derelictorg.github.io/building/overview/
+[3]: http://derelictorg.github.io/loading/loader/
 
