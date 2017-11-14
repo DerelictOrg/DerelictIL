@@ -119,7 +119,7 @@ extern( System ) {
     alias da_ilutGLSubTex = ILboolean function( uint, ILuint, ILuint );
 
     version( Windows ) {
-        private import derelict.util.wintypes;
+        private import core.sys.windows.windows;
         alias da_ilutConvertToHBitmap = HBITMAP function( HDC hDC );
         alias da_ilutFreePaddedData = void function( ILubyte *Data );
         alias da_ilutGetBmpInfo = void function( BITMAPINFO *Info );
